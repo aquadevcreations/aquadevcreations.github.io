@@ -14,13 +14,54 @@
   #fill{height:100%;width:0;background:#ffd23f;border-radius:1px;transition:width .2s}
   #pct{font-size:12px;letter-spacing:2px;opacity:.8}
   #err{position:fixed;left:50%;top:40%;transform:translateX(-50%);background:#fff;color:#111;padding:14px 18px;border-radius:10px;max-width:80%;text-align:center;display:none;font-size:14px}
+  #over{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(8,18,34,.94);color:#eaf6ff;text-align:center;padding:24px;box-sizing:border-box}
+  #over img{width:84px;height:84px;border-radius:20px}
+  #over h2{margin:0;font-size:22px}
+  #over p{margin:0;max-width:300px;font-size:14px;line-height:1.5;opacity:.9}
+  #over a{display:inline-block;margin-top:4px;background:#ffd23f;color:#1a1a1a;font-weight:800;text-decoration:none;padding:12px 22px;border-radius:12px;border:3px solid #1a1a1a;box-shadow:0 5px 0 #1a1a1a}
+  #over a.sec{background:transparent;color:#cfe8ff;border:0;box-shadow:none;padding:6px;font-weight:600;text-decoration:underline}
+  #timer{position:fixed;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;font:600 12px/1 system-ui,sans-serif;padding:6px 9px;border-radius:8px;display:none;pointer-events:none}
 </style>
 </head>
 <body>
 <canvas id="unity-canvas" tabindex="-1"></canvas>
 <div id="loading"><img src="TemplateData/pf-icon.jpg" alt=""><div id="bar"><div id="fill"></div></div><div id="pct">LOADING…</div></div>
 <div id="err"></div>
+<div id="timer"></div>
+<div id="over"><img src="TemplateData/pf-icon.jpg" alt=""><h2 id="o-t"></h2><p id="o-p"></p>
+<a id="o-a" href="https://groups.google.com/g/pixelfishing" target="_top" rel="noopener"></a>
+<a class="sec" id="o-b" href="https://aquadevcreations.github.io/pixel-fishing.html" target="_top"></a></div>
 <script>
+
+  // ---- Limite demo: 3 minuti di gioco ogni 24 ore per browser ----
+  var LIMIT = 180, WINDOW = 24 * 3600 * 1000;
+  var IT = (navigator.language || "").toLowerCase().indexOf("it") === 0;
+  try { var lc = localStorage.getItem("langChoice"); if (lc) IT = lc === "it"; } catch (e) {}
+  function load() { try { var d = JSON.parse(localStorage.getItem("pf_demo") || "null"); if (d && Date.now() - d.start < WINDOW) return d; } catch (e) {} return { start: Date.now(), used: 0 }; }
+  function save(d) { try { localStorage.setItem("pf_demo", JSON.stringify(d)); } catch (e) {} }
+  var demo = load(); save(demo);
+  var unity = null, ended = false;
+  function endDemo() {
+    if (ended) return; ended = true;
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("timer").style.display = "none";
+    document.getElementById("o-t").textContent = IT ? "Fine della demo" : "Demo over";
+    document.getElementById("o-p").textContent = IT ? "Ti è piaciuto? Pixel Fishing è in test chiuso su Google Play: unisciti ai tester per giocare alla versione completa." : "Enjoyed it? Pixel Fishing is in closed testing on Google Play: join the testers to play the full version.";
+    document.getElementById("o-a").textContent = IT ? "Diventa tester" : "Become a tester";
+    document.getElementById("o-b").textContent = IT ? "Scopri di più" : "Learn more";
+    document.getElementById("over").style.display = "flex";
+    if (unity) { try { unity.Quit(); } catch (e) {} }
+  }
+  function tick() {
+    if (ended || !unity) return;
+    if (!document.hidden) { demo.used += 1; save(demo); }
+    var left = Math.max(0, LIMIT - demo.used);
+    var t = document.getElementById("timer");
+    t.style.display = "block";
+    t.textContent = (IT ? "Demo " : "Demo ") + Math.floor(left / 60) + ":" + String(left % 60).padStart(2, "0");
+    if (left <= 0) endDemo();
+  }
+  if (demo.used >= LIMIT) { endDemo(); }
   var canvas = document.getElementById("unity-canvas");
   var config = {
     arguments: [],
@@ -40,13 +81,15 @@
     createUnityInstance(canvas, config, function (p) {
       document.getElementById("fill").style.width = Math.round(p * 100) + "%";
       document.getElementById("pct").textContent = "LOADING " + Math.round(p * 100) + "%";
-    }).then(function () {
+    }).then(function (inst) {
+      unity = inst;
       document.getElementById("loading").style.display = "none";
     }).catch(function (m) {
       var e = document.getElementById("err"); e.textContent = m; e.style.display = "block";
     });
   };
-  document.body.appendChild(s);
+  if (!ended) document.body.appendChild(s);
+  setInterval(tick, 1000);
 </script>
 </body>
 </html>
