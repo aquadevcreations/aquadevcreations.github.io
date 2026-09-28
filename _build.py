@@ -267,7 +267,7 @@ APPS = [
 
  dict(
   slug="pixel-fishing", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
-  shots=["pixelfishing-1.jpg", "pixelfishing-2.jpg"], cover="pixelfishing-cover.jpg", status="test",
+  shots=["pixelfishing-cover.jpg", "pixelfishing-2.jpg"], status="test",
   package="com.aquascape.pixelfishing",
   demo="pixelfishing",
   play="https://play.google.com/store/apps/details?id=com.aquascape.pixelfishing",
