@@ -358,7 +358,7 @@ APPS = [
  ),
 
  dict(
-  slug="nudge", name="Nudge", icon="nudge-icon.png",
+  slug="nudge", name="Nudge", icon="nudge-icon.png", hidden=True,  # nascosta: pagine attive ma non linkate
   shots=["nudge-1.jpg", "nudge-2.jpg", "nudge-3.jpg"], status="test",
   package="com.aquascape.nudge",
   demo="nudge",
@@ -533,7 +533,7 @@ def sidebar(app, active):
     )
     others = "".join(
         f'<a href="{o["slug"]}.html"><img src="{o["icon"]}" alt="">{o["name"]}</a>'
-        for o in APPS if o["slug"] != app["slug"]
+        for o in APPS if o["slug"] != app["slug"] and not o.get("hidden")
     )
     return f"""<aside class="side">
   <a href="index.html" class="brand"><img src="logo.png" alt="aquadev creations"></a>
@@ -743,7 +743,7 @@ def versions(app):
 
 def home():
     cards = ""
-    for a in APPS:
+    for a in [x for x in APPS if not x.get("hidden")]:
         cards += f"""<a class="app-card" href="{a['slug']}.html">
   <div class="cover">{f'<img src="{a.get("cover") or a["shots"][0]}" alt="">' if a["shots"] else f'<div class="cover-icon" style="background:{a.get("cover_bg","#eef3f2")}"><img src="{a["icon"]}" alt=""></div>'}</div>
   <div class="body">
@@ -752,7 +752,7 @@ def home():
     <span class="more">{bi("Scopri di più →", "Learn more →")}</span>
   </div>
 </a>"""
-    links = " · ".join(f'<a href="{a["slug"]}-privacy.html">{a["name"]}</a>' for a in APPS)
+    links = " · ".join(f'<a href="{a["slug"]}-privacy.html">{a["name"]}</a>' for a in APPS if not a.get("hidden"))
     return (head("aquadev creations", "aquadev creations — Android games and apps: Wobblebrain, Irreversible, Pixel Fishing.", "")
             + f"""<div class="topbar"><button class="lang">EN</button></div>
 <section class="hero">
