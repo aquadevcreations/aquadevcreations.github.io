@@ -10,7 +10,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 EMAIL = "aquadev.creations@gmail.com"
 DEV = "aquadev"
 TELEGRAM = "https://t.me/donttouchthebutton"
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Roboto:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">'
 
 
 def bi(it, en, tag="span"):
@@ -43,7 +43,7 @@ def mailto(subject, body=""):
 APPS = [
  dict(
   slug="wobblebrain", name="Wobblebrain", icon="wobblebrain-icon.jpg",
-  shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="test",
+  shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="test", demo="wobblebrain",
   group=dict(email="wobblebrain_closedtest@googlegroups.com", url="https://groups.google.com/g/wobblebrain_closedtest"),
   package="com.aquascape.wobblebrain.puzzle",
   play="https://play.google.com/store/apps/details?id=com.aquascape.wobblebrain.puzzle",
@@ -548,8 +548,8 @@ def demo_block(app):
         return ""
     return (f'<section class="demo-wrap">'
             f'<h2>{bi("Provala qui", "Try it here")}</h2>'
-            + (bi("Due telefoni collegati: invia un trillo dal tuo e guarda cosa arriva al partner. Poi rispondi dal suo.", "Two linked phones: send a nudge from yours and see what your partner gets. Then reply from theirs.", "p") if d == "nudge" else bi("Il gioco vero in una demo di 3 minuti, direttamente nel browser: niente da installare.", "The real game in a 3-minute demo, right in your browser: nothing to install.", "p") if d == "pixelfishing" else bi("Una demo fedele della schermata principale dell'app, direttamente nel browser.", "A faithful demo of the app's main screen, right in your browser.", "p")).replace('<p class="it">','<p class="it muted">').replace('<p class="en">','<p class="en muted">')
-            + f'<div class="demo-stage{" wide" if d == "nudge" else ""}"><div id="demo-{d}"></div></div>'
+            + (bi("Due telefoni collegati: invia un trillo dal tuo e guarda cosa arriva al partner. Poi rispondi dal suo.", "Two linked phones: send a nudge from yours and see what your partner gets. Then reply from theirs.", "p") if d == "nudge" else bi("Il gioco vero in una demo di 3 minuti, direttamente nel browser: niente da installare.", "The real game in a 3-minute demo, right in your browser: nothing to install.", "p") if d == "pixelfishing" else bi("Il primo capitolo del gioco vero, livello dopo livello: tocca o trascina i blocchi sui piatti per bilanciare le bilance.", "The real game's first chapter, level by level: tap or drag the blocks onto the trays to balance the scales.", "p") if d == "wobblebrain" else bi("Una demo fedele della schermata principale dell'app, direttamente nel browser.", "A faithful demo of the app's main screen, right in your browser.", "p")).replace('<p class="it">','<p class="it muted">').replace('<p class="en">','<p class="en muted">')
+            + f'<div class="demo-stage{" wide" if d == "nudge" else " mid" if d == "wobblebrain" else ""}"><div id="demo-{d}"></div></div>'
             f'<script src="demo-{d}.js" defer></script></section>')
 
 
