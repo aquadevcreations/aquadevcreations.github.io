@@ -25,7 +25,7 @@
 </head>
 <body>
 <canvas id="unity-canvas" tabindex="-1"></canvas>
-<div id="loading"><img src="TemplateData/pf-icon.jpg" alt=""><div id="bar"><div id="fill"></div></div><div id="pct">LOADING…</div></div>
+<div id="loading"><img src="TemplateData/pf-icon.jpg" alt=""><div id="bar"><div id="fill"></div></div><div id="pct">…</div></div>
 <div id="err"></div>
 <div id="timer"></div>
 <div id="over"><img src="TemplateData/pf-icon.jpg" alt=""><h2 id="o-t"></h2><p id="o-p"></p>
@@ -33,10 +33,22 @@
 <a class="sec" id="o-b" href="https://aquadevcreations.github.io/pixel-fishing.html" target="_top"></a></div>
 <script>
 
-  // ---- Limite demo: 3 minuti di gioco ogni 24 ore per browser ----
-  var LIMIT = 180, WINDOW = 24 * 3600 * 1000;
-  var IT = (navigator.language || "").toLowerCase().indexOf("it") === 0;
-  try { var lc = localStorage.getItem("langChoice"); if (lc) IT = lc === "it"; } catch (e) {}
+  // ---- Limite demo: 1 minuto di gioco ogni 24 ore per browser ----
+  var LIMIT = 60, WINDOW = 24 * 3600 * 1000;
+  // Lingua: segue il selettore della pagina del sito (default inglese)
+  function pageLang() {
+    try { if (window.parent !== window && window.parent.document.body.dataset.lang) return window.parent.document.body.dataset.lang; } catch (e) {}
+    var q = (location.search.match(/[?&]lang=(it|en)/) || [])[1]; if (q) return q;
+    try { var lc = localStorage.getItem("langChoice"); if (lc) return lc; } catch (e) {}
+    return "en";
+  }
+  var IT = pageLang() === "it";
+  document.documentElement.lang = IT ? "it" : "en";
+  function applyLang() {
+    IT = pageLang() === "it"; document.documentElement.lang = IT ? "it" : "en";
+    if (ended) showTexts();
+  }
+  try { if (window.parent !== window) new window.parent.MutationObserver(applyLang).observe(window.parent.document.body, { attributes: true, attributeFilter: ["data-lang"] }); } catch (e) {}
   function load() { try { var d = JSON.parse(localStorage.getItem("pf_demo") || "null"); if (d && Date.now() - d.start < WINDOW) return d; } catch (e) {} return { start: Date.now(), used: 0 }; }
   function save(d) { try { localStorage.setItem("pf_demo", JSON.stringify(d)); } catch (e) {} }
   var demo = load(); save(demo);
@@ -45,12 +57,15 @@
     if (ended) return; ended = true;
     document.getElementById("loading").style.display = "none";
     document.getElementById("timer").style.display = "none";
+    showTexts();
+    document.getElementById("over").style.display = "flex";
+    if (unity) { try { unity.Quit(); } catch (e) {} }
+  }
+  function showTexts() {
     document.getElementById("o-t").textContent = IT ? "Fine della demo" : "Demo over";
     document.getElementById("o-p").textContent = IT ? "Ti è piaciuto? Pixel Fishing è in test chiuso su Google Play: unisciti ai tester per giocare alla versione completa." : "Enjoyed it? Pixel Fishing is in closed testing on Google Play: join the testers to play the full version.";
     document.getElementById("o-a").textContent = IT ? "Diventa tester" : "Become a tester";
     document.getElementById("o-b").textContent = IT ? "Scopri di più" : "Learn more";
-    document.getElementById("over").style.display = "flex";
-    if (unity) { try { unity.Quit(); } catch (e) {} }
   }
   function tick() {
     if (ended || !unity) return;
@@ -80,7 +95,7 @@
   s.onload = function () {
     createUnityInstance(canvas, config, function (p) {
       document.getElementById("fill").style.width = Math.round(p * 100) + "%";
-      document.getElementById("pct").textContent = "LOADING " + Math.round(p * 100) + "%";
+      document.getElementById("pct").textContent = (IT ? "CARICAMENTO " : "LOADING ") + Math.round(p * 100) + "%";
     }).then(function (inst) {
       unity = inst;
       document.getElementById("loading").style.display = "none";

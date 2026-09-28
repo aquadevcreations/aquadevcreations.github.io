@@ -3,7 +3,7 @@
 Uso:  python3 _build.py   (dalla cartella del sito). Tutti i file stanno nella stessa cartella, senza sottocartelle.
 Per aggiungere un'app: aggiungi una voce in APPS con i suoi testi e rilancia lo script.
 """
-import os, html
+import os, html, hashlib
 from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -489,10 +489,19 @@ def head(title, desc, prefix):
 <meta name="description" content="{html.escape(desc)}">
 <link rel="icon" href="favicon.png">
 {FONTS}
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="{V("style.css")}">
 </head>
 <body data-lang="en">
 """
+
+
+def V(name):
+    """Versione del file (hash del contenuto) per forzare il browser a scaricare la copia aggiornata."""
+    try:
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), name), "rb") as f:
+            return name + "?v=" + hashlib.md5(f.read()).hexdigest()[:8]
+    except OSError:
+        return name
 
 
 GOATCOUNTER = "aquadev"  # codice scelto su goatcounter.com -> https://aquadev.goatcounter.com
@@ -500,7 +509,7 @@ GOATCOUNTER = "aquadev"  # codice scelto su goatcounter.com -> https://aquadev.g
 
 def foot_script(prefix):
     return (f'<script data-goatcounter="https://{GOATCOUNTER}.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n'
-            f'<script src="site.js"></script>\n'
+            f'<script src="{V("site.js")}"></script>\n'
             '</body>\n</html>\n')
 
 
@@ -548,9 +557,9 @@ def demo_block(app):
         return ""
     return (f'<section class="demo-wrap">'
             f'<h2>{bi("Provala qui", "Try it here")}</h2>'
-            + (bi("Due telefoni collegati: invia un trillo dal tuo e guarda cosa arriva al partner. Poi rispondi dal suo.", "Two linked phones: send a nudge from yours and see what your partner gets. Then reply from theirs.", "p") if d == "nudge" else bi("Il gioco vero in una demo di 3 minuti, direttamente nel browser: niente da installare.", "The real game in a 3-minute demo, right in your browser: nothing to install.", "p") if d == "pixelfishing" else bi("Il primo capitolo del gioco vero, livello dopo livello: tocca o trascina i blocchi sui piatti per bilanciare le bilance.", "The real game's first chapter, level by level: tap or drag the blocks onto the trays to balance the scales.", "p") if d == "wobblebrain" else bi("Una demo fedele della schermata principale dell'app, direttamente nel browser.", "A faithful demo of the app's main screen, right in your browser.", "p")).replace('<p class="it">','<p class="it muted">').replace('<p class="en">','<p class="en muted">')
+            + (bi("Due telefoni collegati: invia un trillo dal tuo e guarda cosa arriva al partner. Poi rispondi dal suo.", "Two linked phones: send a nudge from yours and see what your partner gets. Then reply from theirs.", "p") if d == "nudge" else bi("Il gioco vero in una demo di 1 minuto, direttamente nel browser: niente da installare.", "The real game in a 1-minute demo, right in your browser: nothing to install.", "p") if d == "pixelfishing" else bi("Il primo capitolo del gioco vero, livello dopo livello: tocca o trascina i blocchi sui piatti per bilanciare le bilance.", "The real game's first chapter, level by level: tap or drag the blocks onto the trays to balance the scales.", "p") if d == "wobblebrain" else bi("Una demo fedele della schermata principale dell'app, direttamente nel browser.", "A faithful demo of the app's main screen, right in your browser.", "p")).replace('<p class="it">','<p class="it muted">').replace('<p class="en">','<p class="en muted">')
             + f'<div class="demo-stage{" wide" if d == "nudge" else " mid" if d == "wobblebrain" else ""}"><div id="demo-{d}"></div></div>'
-            f'<script src="demo-{d}.js" defer></script></section>')
+            f'<script src="{V("demo-" + d + ".js")}" defer></script></section>')
 
 
 def overview(app):

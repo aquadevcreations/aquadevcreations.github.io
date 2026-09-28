@@ -13,9 +13,12 @@
     '</div>' +
     '<a class="pf-full" href="pixel-fishing-play/" target="_blank" rel="noopener"></a>';
   function texts() {
-    root.querySelector(".pf-lbl").textContent = it() ? "Gioca" : "Play";
-    root.querySelector(".pf-size").textContent = it() ? "circa 40 MB" : "about 40 MB";
-    root.querySelector(".pf-full").textContent = it() ? "Apri a schermo intero ↗" : "Open fullscreen ↗";
+    var lbl = root.querySelector(".pf-lbl"), size = root.querySelector(".pf-size");
+    if (lbl) lbl.textContent = it() ? "Gioca" : "Play";
+    if (size) size.textContent = it() ? "circa 40 MB" : "about 40 MB";
+    var full = root.querySelector(".pf-full");
+    full.textContent = it() ? "Apri a schermo intero ↗" : "Open fullscreen ↗";
+    full.href = "pixel-fishing-play/?lang=" + (it() ? "it" : "en");
   }
   texts();
   document.querySelectorAll(".lang").forEach(function (b) { b.addEventListener("click", function () { setTimeout(texts, 0); }); });

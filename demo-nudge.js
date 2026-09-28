@@ -46,10 +46,17 @@
     glow: [0, 12],
     "💥": [0, 30, 20, 110], "❤️": [0, 80, 90, 120], "😈": [0, 60, 40, 65], "✨": [0, 35, 30, 40, 30, 45], "💨": [0, 50, 35, 75]
   };
+  // [emoji, etichetta IT, testo IT, colore, etichetta EN, testo EN] (testi EN da values/strings.xml dell'app)
   var REACTIONS = [
-    ["💥", "Preso!", "Preso! 💥", "#FF5252"], ["❤️", "Amore", "Ti penso ❤️", "#FF4081"], ["😈", "Vendetta!", "Vendetta! 😈", "#E040FB"],
-    ["✨", "Magico", "Magico! ✨", "#00E5FF"], ["💨", "Salto!", "Salto! 💨", "#00E676"]
+    ["💥", "Preso!", "Preso! 💥", "#FF5252", "Gotcha!", "Gotcha! 💥"], ["❤️", "Amore", "Ti penso ❤️", "#FF4081", "Love", "Thinking of you ❤️"],
+    ["😈", "Vendetta!", "Vendetta! 😈", "#E040FB", "Revenge!", "Revenge! 😈"], ["✨", "Magico", "Magico! ✨", "#00E5FF", "Magic", "Magic! ✨"],
+    ["💨", "Salto!", "Salto! 💨", "#00E676", "Jump!", "Breeze jump! 💨"]
   ];
+  function reactText(emoji) {
+    for (var i = 0; i < REACTIONS.length; i++) if (REACTIONS[i][0] === emoji) return lang() === "it" ? REACTIONS[i][2] : REACTIONS[i][5];
+    return emoji;
+  }
+  function schizzoName(t) { return t === "FANGO" ? T("Fango", "Mud") : T("Vernice", "Paint"); }
   function hexA(hex, a) { var n = parseInt(hex.slice(1), 16); return "rgba(" + (n >> 16 & 255) + "," + (n >> 8 & 255) + "," + (n & 255) + "," + a + ")"; }
 
   // ---------- Layout generale ----------
@@ -58,6 +65,7 @@
     '<div class="nd-pair"><div class="nd-slot" data-s="0"><div class="nd-cap"></div></div><div class="nd-slot" data-s="1"><div class="nd-cap"></div></div></div>' +
     '<p class="nd-note"></p>';
   var lang = function () { return document.body.dataset.lang === "it" ? "it" : "en"; };
+  function T(it, en) { return lang() === "it" ? it : en; }
   function capTexts() {
     var it = lang() === "it";
     root.querySelector('[data-s="0"] .nd-cap').textContent = it ? "Il tuo telefono (Alex)" : "Your phone (Alex)";
@@ -67,7 +75,7 @@
       : "Demo: both phones are simulated on this page, nothing is sent. On Android your phone vibrates with the app's own patterns.";
   }
   capTexts();
-  document.querySelectorAll(".lang").forEach(function (b) { b.addEventListener("click", function () { setTimeout(capTexts, 0); }); });
+  document.querySelectorAll(".lang").forEach(function (b) { b.addEventListener("click", function () { setTimeout(function () { capTexts(); if (window.__ndLang) window.__ndLang(); }, 0); }); });
 
   var slots = root.querySelectorAll(".nd-slot"), tabs = root.querySelectorAll(".nd-tabs button");
   function showTab(i) {
@@ -91,6 +99,7 @@
     this.home = sc.querySelector(".nd-home"); this.layer = sc.querySelector(".nd-layer");
     this.sheetWrap = sc.querySelector(".nd-sheetwrap"); this.bannerEl = sc.querySelector(".nd-banner"); this.snackEl = sc.querySelector(".nd-snack");
     this.renderHome();
+    this.home.addEventListener("click", function (e) { self.onHomeClick(e); });
     this.fit = function () {
       var w = Math.min(360, slot.clientWidth || 360), s = w / PW;
       self.phone.style.transform = "scale(" + s + ")";
@@ -134,36 +143,39 @@
       // Top bar
       '<div class="nd-top"><div class="nd-row"><div class="nd-orb"><span class="nd-orb-p"></span><span class="nd-dot g"></span><span class="nd-dot c"></span></div>' +
       '<div class="nd-idn"><div class="nd-row"><span class="nd-t1">NUDGE 1:1</span><span class="nd-sep"></span><span class="nd-t2">ONLINE</span></div><div class="nd-pname">' + esc(this.partner) + '</div></div></div>' +
-      '<div class="nd-row"><button class="nd-ib" data-a="soon">' + ic("info", 18, "#38BDF8") + '</button><button class="nd-ib" data-a="soon">' + ic("settings", 18, "#94A3B8") + '</button><button class="nd-disc" data-a="soon">Scollega</button></div></div>' +
+      '<div class="nd-row"><button class="nd-ib" data-a="soon">' + ic("info", 18, "#38BDF8") + '</button><button class="nd-ib" data-a="soon">' + ic("settings", 18, "#94A3B8") + '</button><button class="nd-disc" data-a="soon">' + T("Scollega", "Disconnect") + '</button></div></div>' +
       // FGS
-      '<div class="nd-fgs"><span class="nd-gdot"></span><span>Nudge in ascolto in background • Connessione in tempo reale attiva</span></div>' +
+      '<div class="nd-fgs"><span class="nd-gdot"></span><span>' + T("Nudge in ascolto in background • Connessione in tempo reale attiva", "Nudge listening in background • Real-time connection active") + '</span></div>' +
       // Section title
-      '<div class="nd-sec"><span class="nd-bar"></span>SCEGLI IL TUO TRILLO</div>' +
+      '<div class="nd-sec"><span class="nd-bar"></span>' + T("SCEGLI IL TUO TRILLO", "CHOOSE YOUR NUDGE") + '</div>' +
       // Brivido hero
-      '<div class="nd-card nd-hero" data-a="brivido"><div class="nd-hero-in"><div class="nd-row nd-sb"><div class="nd-hico">' + ic("vibration", 26, "#fff") + '</div><div class="nd-chip">⚡ RITMO APTICO</div></div>' +
-      '<div class="nd-h22">Il Brivido</div><div class="nd-p13">Componi liberamente una sequenza di tap e pause. Il tuo partner la percepirà fedelmente sul proprio dispositivo in tempo reale.</div>' +
-      '<button class="nd-btn nd-grad-coral" data-a="brivido">' + ic("touch", 18, "#fff") + '<span>Componi Ritmo</span></button></div></div>' +
+      '<div class="nd-card nd-hero" data-a="brivido"><div class="nd-hero-in"><div class="nd-row nd-sb"><div class="nd-hico">' + ic("vibration", 26, "#fff") + '</div><div class="nd-chip">⚡ ' + T("RITMO APTICO", "HAPTIC RHYTHM") + '</div></div>' +
+      '<div class="nd-h22">Il Brivido</div><div class="nd-p13">' + T("Componi liberamente una sequenza di tap e pause. Il tuo partner la percepirà fedelmente sul proprio dispositivo in tempo reale.", "Freely compose a sequence of taps and pauses. Your partner will feel it faithfully on their device in real time.") + '</div>' +
+      '<button class="nd-btn nd-grad-coral" data-a="brivido">' + ic("touch", 18, "#fff") + '<span>' + T("Componi Ritmo", "Compose Rhythm") + '</span></button></div></div>' +
       // Grid Mosca / Schizzo
-      '<div class="nd-grid"><div class="nd-card nd-mini amber" data-a="mosca"><div class="nd-mini-in"><div class="nd-eico">🪰</div><div class="nd-h17">La Mosca</div><div class="nd-p11">Ronzio insistente ed overlay a schermo da scacciare.</div><button class="nd-btn2 nd-grad-amber" data-a="mosca">Invia Mosca</button></div></div>' +
-      '<div class="nd-card nd-mini cyan" data-a="schizzo"><div class="nd-mini-in"><div class="nd-eico">🎨</div><div class="nd-h17">Lo Schizzo</div><div class="nd-p11">Imbratta lo schermo di vernice o fango da pulire.</div><button class="nd-btn2 nd-grad-cyan" data-a="schizzo">Scegli Colore</button></div></div></div>' +
+      '<div class="nd-grid"><div class="nd-card nd-mini amber" data-a="mosca"><div class="nd-mini-in"><div class="nd-eico">🪰</div><div class="nd-h17">La Mosca</div><div class="nd-p11">' + T("Ronzio insistente ed overlay a schermo da scacciare.", "Relentless buzzing and an on-screen fly to swat.") + '</div><button class="nd-btn2 nd-grad-amber" data-a="mosca">' + T("Invia Mosca", "Send Fly") + '</button></div></div>' +
+      '<div class="nd-card nd-mini cyan" data-a="schizzo"><div class="nd-mini-in"><div class="nd-eico">🎨</div><div class="nd-h17">Lo Schizzo</div><div class="nd-p11">' + T("Imbratta lo schermo di vernice o fango da pulire.", "Splatter paint or mud on their screen to wipe off.") + '</div><button class="nd-btn2 nd-grad-cyan" data-a="schizzo">' + T("Scegli Colore", "Pick Color") + '</button></div></div></div>' +
       // Soffio
-      '<div class="nd-card nd-wide violet" data-a="soffio"><div class="nd-wide-in viol"><div class="nd-eico w">💨</div><div class="nd-grow"><div class="nd-h17">Il Soffio</div><div class="nd-p12">Raffica improvvisa che fa sobbalzare il telefono sulla scrivania.</div></div><button class="nd-btn3 nd-grad-violet" data-a="soffio">Soffia!</button></div></div>' +
+      '<div class="nd-card nd-wide violet" data-a="soffio"><div class="nd-wide-in viol"><div class="nd-eico w">💨</div><div class="nd-grow"><div class="nd-h17">Il Soffio</div><div class="nd-p12">' + T("Raffica improvvisa che fa sobbalzare il telefono sulla scrivania.", "A sudden gust that makes the phone jump on the desk.") + '</div></div><button class="nd-btn3 nd-grad-violet" data-a="soffio">' + T("Soffia!", "Blow!") + '</button></div></div>' +
       // Glow
-      '<div class="nd-card nd-wide glow" data-a="canvas"><div class="nd-wide-in cyn"><div class="nd-eico w c">✨</div><div class="nd-grow"><div class="nd-row"><span class="nd-h17">Glow Draw</span><span class="nd-neon">NEON</span></div><div class="nd-p12">Tratto neon effimero in tempo reale che svanisce in 6 secondi.</div></div><button class="nd-btn3 nd-grad-glow" data-a="canvas">Disegna</button></div></div>' +
+      '<div class="nd-card nd-wide glow" data-a="canvas"><div class="nd-wide-in cyn"><div class="nd-eico w c">✨</div><div class="nd-grow"><div class="nd-row"><span class="nd-h17">Glow Draw</span><span class="nd-neon">NEON</span></div><div class="nd-p12">' + T("Tratto neon effimero in tempo reale che svanisce in 6 secondi.", "A live, ephemeral neon stroke that fades in 6 seconds.") + '</div></div><button class="nd-btn3 nd-grad-glow" data-a="canvas">' + T("Disegna", "Draw") + '</button></div></div>' +
       // Lab
-      '<div class="nd-lab"><div class="nd-row"><span style="font-size:18px">🧪</span><span class="nd-labt">Laboratorio Test (Prova sul tuo telefono)</span></div>' +
-      '<div class="nd-labp">Simula la ricezione di ciascun trillo per provarne la vibrazione e gli overlay visivi.</div>' +
+      '<div class="nd-lab"><div class="nd-row"><span style="font-size:18px">🧪</span><span class="nd-labt">' + T("Laboratorio Test (Prova sul tuo telefono)", "Test Lab (Try it on your phone)") + '</span></div>' +
+      '<div class="nd-labp">' + T("Simula la ricezione di ciascun trillo per provarne la vibrazione e gli overlay visivi.", "Simulate receiving each nudge to try its vibration and visual overlays.") + '</div>' +
       '<div class="nd-labrow"><button class="nd-ob" data-l="brivido">⚡ Brivido</button><button class="nd-ob" data-l="mosca">🪰 Mosca</button><button class="nd-ob" data-l="schizzo">🎨 Schizzo</button></div>' +
-      '<div class="nd-labrow"><button class="nd-ob" data-l="soffio">💨 Soffio</button><button class="nd-ob" data-l="canvas">✨ Glow Draw</button><button class="nd-ob" data-l="reaction">💬 Reazione</button></div></div>' +
+      '<div class="nd-labrow"><button class="nd-ob" data-l="soffio">💨 Soffio</button><button class="nd-ob" data-l="canvas">✨ Glow Draw</button><button class="nd-ob" data-l="reaction">💬 ' + T("Reazione", "Reaction") + '</button></div></div>' +
       // Widget
-      '<div class="nd-widget"><div class="nd-wico">' + ic("widgets", 20, "#9D4EDD") + '</div><div class="nd-grow"><div class="nd-labt">Widget Homescreen 1-Tap</div><div class="nd-p11 s">Aggiungi il widget Glance per lanciare tutti e 4 i trilli direttamente dalla schermata home.</div></div></div>' +
+      '<div class="nd-widget"><div class="nd-wico">' + ic("widgets", 20, "#9D4EDD") + '</div><div class="nd-grow"><div class="nd-labt">' + T("Widget Homescreen 1-Tap", "1-Tap Homescreen Widget") + '</div><div class="nd-p11 s">' + T("Aggiungi il widget Glance per lanciare tutti e 4 i trilli direttamente dalla schermata home.", "Add the Glance widget to launch all 4 nudges straight from your home screen.") + '</div></div></div>' +
       // History
       '<div class="nd-hhead"><span class="nd-htitle"></span><button class="nd-clear" data-a="clear">' + ic("delOut", 18, "#64748B") + '</button></div>' +
       '<div class="nd-hist"></div>' +
       '</div>';
     this.renderHistory();
+  };
 
-    this.home.addEventListener("click", function (e) {
+  PP.onHomeClick = function (e) {
+    var self = this;
+    (function () {
       var a = e.target.closest("[data-a],[data-l],[data-r],[data-replay]");
       if (!a) return;
       e.stopPropagation();
@@ -176,38 +188,40 @@
         case "schizzo": return self.openSchizzoPicker();
         case "soffio": return self.sendSoffio();
         case "canvas": return self.openGlowSheet();
-        case "clear": self.history = []; self.renderHistory(); return self.snack("Storico trilli svuotato");
-        case "soon": return self.snack(lang() === "it" ? "Disponibile nell'app completa." : "Available in the full app.");
+        case "clear": self.history = []; self.renderHistory(); return self.snack(T("Storico trilli svuotato", "Nudge history cleared"));
+        case "soon": return self.snack(T("Disponibile nell'app completa.", "Available in the full app."));
       }
-    });
+    })();
   };
 
-  function timeAgo(ts) { var m = Math.floor((Date.now() - ts) / 60000); return m + " min fa"; }
-  var TYPE = { brivido: ["⚡", "Il Brivido"], mosca: ["🪰", "La Mosca"], schizzo: ["🎨", "Lo Schizzo"], soffio: ["💨", "Il Soffio"], canvas: ["✨", "Glow Draw"], reaction: ["💬", "Reazione Rapida"] };
+  function timeAgo(ts) { var m = Math.floor((Date.now() - ts) / 60000); return T(m + " min fa", m + " min ago"); }
+  var TYPE = { brivido: ["⚡", "Il Brivido"], mosca: ["🪰", "La Mosca"], schizzo: ["🎨", "Lo Schizzo"], soffio: ["💨", "Il Soffio"], canvas: ["✨", "Glow Draw"], reaction: ["💬", "Reazione Rapida", "Quick Reaction"] };
 
   PP.renderHistory = function () {
     var h = this.history;
-    this.home.querySelector(".nd-htitle").textContent = "STORICO TRILLI (" + h.length + ")";
+    this.home.querySelector(".nd-htitle").textContent = T("STORICO TRILLI (", "NUDGE HISTORY (") + h.length + ")";
     this.home.querySelector(".nd-clear").style.visibility = h.length ? "visible" : "hidden";
     var box = this.home.querySelector(".nd-hist");
     if (!h.length) {
-      box.innerHTML = '<div class="nd-empty">Ancora nessun trillo scambiato.<br>Invia un Brivido, una Mosca o uno Schizzo!</div>';
+      box.innerHTML = '<div class="nd-empty">' + T("Ancora nessun trillo scambiato.<br>Invia un Brivido, una Mosca o uno Schizzo!", "No nudges exchanged yet.<br>Send a Brivido, a Mosca or a Schizzo!") + '</div>';
       return;
     }
     box.innerHTML = h.map(function (it) {
       var t = TYPE[it.type], icon = it.type === "reaction" ? (it.emoji || "💬") : t[0];
-      var detail = { brivido: "Pattern di " + Math.floor((it.pattern || []).length / 2) + " tocchi", schizzo: (it.schizzoType || "Vernice") + " " + (it.color || ""), mosca: "Ronzio persistente", soffio: "Raffica salto", canvas: "Tratto neon effimero", reaction: it.text || "Contro-reazione al volo" }[it.type];
+      var nt = Math.floor((it.pattern || []).length / 2);
+      var detail = { brivido: T("Pattern di " + nt + " tocchi", nt + "-tap pattern"), schizzo: schizzoName(it.schizzoType) + " " + (it.color || ""), mosca: T("Ronzio persistente", "Persistent buzzing"), soffio: T("Raffica salto", "Jump gust"), canvas: T("Tratto neon effimero", "Ephemeral neon stroke"), reaction: it.emoji ? reactText(it.emoji) : T("Contro-reazione al volo", "Instant counter-reaction") }[it.type];
+      var tname = t[2] ? T(t[1], t[2]) : t[1];
       var sent = it.out;
       var html = '<div class="nd-hitem"><div class="nd-row">' +
         '<div class="nd-hdir ' + (sent ? "s" : "r") + '">' + ic(sent ? "made" : "received", 18, sent ? "#FF3366" : "#00F5D4") + '</div>' +
-        '<div class="nd-grow"><div class="nd-row nd-sb"><span class="nd-hname">' + (sent ? "Inviato a " : "Ricevuto da ") + esc(it.contact) + '</span><span class="nd-hago">' + timeAgo(it.ts) + '</span></div>' +
-        '<div class="nd-hdet">' + icon + " " + t[1] + " • " + esc(detail) + '</div></div>' +
+        '<div class="nd-grow"><div class="nd-row nd-sb"><span class="nd-hname">' + (sent ? T("Inviato a ", "Sent to ") : T("Ricevuto da ", "Received from ")) + esc(it.contact) + '</span><span class="nd-hago">' + timeAgo(it.ts) + '</span></div>' +
+        '<div class="nd-hdet">' + icon + " " + tname + " • " + esc(detail) + '</div></div>' +
         (it.type === "brivido" && it.pattern ? '<button class="nd-hplay" data-replay="' + it.id + '">' + ic("play", 18, "#FF6688") + '</button>' : "") +
         '</div>';
       if (!sent && it.type !== "reaction") {
-        html += '<div class="nd-hreact" data-hid="' + it.id + '"><span>Rispondi:</span>' +
-          [["💥", "Preso! 💥"], ["❤️", "Ti penso ❤️"], ["😈", "Vendetta! 😈"], ["✨", "Magico! ✨"]].map(function (r) {
-            return '<button data-r="' + r[0] + '" data-rt="' + esc(r[1]) + '">' + r[0] + "</button>";
+        html += '<div class="nd-hreact" data-hid="' + it.id + '"><span>' + T("Rispondi:", "Reply:") + '</span>' +
+          ["💥", "❤️", "😈", "✨"].map(function (r) {
+            return '<button data-r="' + r + '">' + r + "</button>";
           }).join("") + "</div>";
       }
       return html + "</div>";
@@ -218,39 +232,39 @@
     var row = btn.closest(".nd-hreact");
     if (row.dataset.done) return;
     row.dataset.done = "1";
-    this.sendReaction(btn.dataset.r, btn.dataset.rt);
+    this.sendReaction(btn.dataset.r);
   };
 
   // ---------- Invio verso il partner ----------
   PP.sendMosca = function () {
     this.addHistory({ type: "mosca", out: true, contact: this.partner });
-    this.snack("🪰 Mosca inviata! Ronzerà sul suo telefono.");
+    this.snack(T("🪰 Mosca inviata! Ronzerà sul suo telefono.", "🪰 Fly sent! It will buzz on their phone."));
     this.other.receive({ type: "mosca" });
   };
   PP.sendSoffio = function () {
     this.addHistory({ type: "soffio", out: true, contact: this.partner });
-    this.snack("💨 Soffio inviato! Salto tattile sul suo telefono.");
+    this.snack(T("💨 Soffio inviato! Salto tattile sul suo telefono.", "💨 Soffio sent! A haptic jump on their phone."));
     this.other.receive({ type: "soffio" });
   };
   PP.sendBrivido = function (pattern) {
     this.addHistory({ type: "brivido", out: true, contact: this.partner, pattern: pattern });
-    this.snack("Brivido inviato al tuo partner!");
+    this.snack(T("Brivido inviato al tuo partner!", "Brivido sent to your partner!"));
     this.other.receive({ type: "brivido", pattern: pattern });
   };
   PP.sendSchizzo = function (t, color) {
     this.addHistory({ type: "schizzo", out: true, contact: this.partner, schizzoType: t, color: color });
-    this.snack("🎨 Schizzo inviato! Il suo schermo è imbrattato.");
+    this.snack(T("🎨 Schizzo inviato! Il suo schermo è imbrattato.", "🎨 Schizzo sent! Their screen is splattered."));
     this.other.receive({ type: "schizzo", schizzoType: t, color: color });
   };
   PP.sendCanvas = function (points, color) {
     this.addHistory({ type: "canvas", out: true, contact: this.partner });
-    this.snack("✨ Disegno al Neon inviato al tuo partner!");
+    this.snack(T("✨ Disegno al Neon inviato al tuo partner!", "✨ Neon drawing sent to your partner!"));
     this.other.receive({ type: "canvas", points: points, color: color });
   };
-  PP.sendReaction = function (emoji, text) {
-    this.addHistory({ type: "reaction", out: true, contact: this.partner, emoji: emoji, text: text });
-    this.snack("Reazione inviata: " + emoji);
-    this.other.receive({ type: "reaction", emoji: emoji, text: text });
+  PP.sendReaction = function (emoji) {
+    this.addHistory({ type: "reaction", out: true, contact: this.partner, emoji: emoji });
+    this.snack(T("Reazione inviata: ", "Reaction sent: ") + emoji);
+    this.other.receive({ type: "reaction", emoji: emoji });
   };
 
   // ---------- Ricezione ----------
@@ -259,7 +273,7 @@
     setTimeout(function () {
       showTab(self.index);
       if (d.type !== "reaction") self.addHistory({ type: d.type, out: false, contact: self.partner, pattern: d.pattern, schizzoType: d.schizzoType, color: d.color });
-      else self.addHistory({ type: "reaction", out: false, contact: self.partner, emoji: d.emoji, text: d.text });
+      else self.addHistory({ type: "reaction", out: false, contact: self.partner, emoji: d.emoji });
       self.show(d, true);
     }, 600);
   };
@@ -273,19 +287,19 @@
       case "schizzo": this.vibrate(HAPTIC.schizzo); this.schizzoOverlay(d.schizzoType || "VERNICE", d.color || "#00E5FF", fromPartner); break;
       case "soffio": this.vibrate(HAPTIC.soffio); this.phone.classList.remove("jump"); void this.phone.offsetWidth; this.phone.classList.add("jump"); break;
       case "canvas": this.vibrate(HAPTIC.tick); this.glowOverlay(d.points || "0.5,0.4;0.4,0.3;0.3,0.35;0.3,0.45;0.5,0.65;0.7,0.45;0.7,0.35;0.6,0.3;0.5,0.4", d.color || "#FF4B6E", sender, fromPartner); break;
-      case "reaction": this.vibrate(HAPTIC[d.emoji] || HAPTIC.tick); this.reactionBanner(d.emoji || "❤️", d.text || "Ti penso ❤️", sender); break;
+      case "reaction": this.vibrate(HAPTIC[d.emoji] || HAPTIC.tick); this.reactionBanner(d.emoji || "❤️", reactText(d.emoji || "❤️"), sender); break;
     }
   };
 
   // Laboratorio Test: stessa logica di simulateIncoming* dell'app
   PP.simulate = function (t) {
     var msg = {
-      brivido: "Brivido test riprodotto sul dispositivo!",
-      mosca: "🪰 Ronzio della mosca attivo! Toccala per prenderla.",
-      schizzo: "🎨 Ricevuto uno Schizzo di VERNICE! Trascina per pulire.",
-      soffio: "💨 Soffio ricevuto! Vibrazione salto.",
-      canvas: "✨ Glow Draw test ricevuto!",
-      reaction: "Reazione test: ❤️ Ti penso ❤️"
+      brivido: T("Brivido test riprodotto sul dispositivo!", "Test Brivido played on the device!"),
+      mosca: T("🪰 Ronzio della mosca attivo! Toccala per prenderla.", "🪰 The fly is buzzing! Tap it to catch it."),
+      schizzo: T("🎨 Ricevuto uno Schizzo di VERNICE! Trascina per pulire.", "🎨 PAINT Schizzo received! Swipe to wipe it off."),
+      soffio: T("💨 Soffio ricevuto! Vibrazione salto.", "💨 Soffio received! Jump vibration."),
+      canvas: T("✨ Glow Draw test ricevuto!", "✨ Test Glow Draw received!"),
+      reaction: T("Reazione test: ", "Test reaction: ") + "❤️ " + reactText("❤️")
     }[t];
     this.snack(msg);
     this.show({ type: t }, false);
@@ -297,13 +311,13 @@
     el.className = "nd-qr";
     el.innerHTML = (title ? '<div class="nd-qrt">' + esc(title) + "</div>" : "") + '<div class="nd-qrr">' +
       REACTIONS.map(function (r) {
-        return '<button style="background:' + hexA(r[3], 0.15) + ";border-color:" + hexA(r[3], 0.35) + '" data-e="' + r[0] + '" data-tx="' + esc(r[2]) + '"><span class="e">' + r[0] + "</span><span>" + r[1] + "</span></button>";
+        return '<button style="background:' + hexA(r[3], 0.15) + ";border-color:" + hexA(r[3], 0.35) + '" data-e="' + r[0] + '"><span class="e">' + r[0] + "</span><span>" + T(r[1], r[4]) + "</span></button>";
       }).join("") + "</div>";
     var done = false;
     el.addEventListener("click", function (e) {
       var b = e.target.closest("button"); if (!b || done) return;
       done = true; b.classList.add("pop");
-      onPick(b.dataset.e, b.dataset.tx);
+      onPick(b.dataset.e);
     });
     return el;
   }
@@ -314,7 +328,7 @@
   PP.flyOverlay = function (fromPartner) {
     var self = this; this.clearLayer();
     var L = this.layer; L.classList.add("on");
-    L.innerHTML = '<div class="nd-fly-banner">🪰 Ronzio insistente! Tocca la mosca!</div><button class="nd-fly"><canvas width="46" height="46"></canvas></button><div class="nd-bottom"></div>';
+    L.innerHTML = '<div class="nd-fly-banner">🪰 ' + T("Ronzio insistente! Tocca la mosca!", "Relentless buzzing! Tap to swat!") + '</div><button class="nd-fly"><canvas width="46" height="46"></canvas></button><div class="nd-bottom"></div>';
     var fly = L.querySelector(".nd-fly"), cv = fly.querySelector("canvas"), g = cv.getContext("2d");
     var dpr = Math.min(3, window.devicePixelRatio || 1); cv.width = 46 * dpr; cv.height = 46 * dpr; cv.style.width = cv.style.height = "46px";
     var W = PW, H = PH, x = W * 0.5, y = H * 0.4, squashed = false, off = 40 / DENS;
@@ -355,11 +369,11 @@
       if (squashed) return; squashed = true;
       self.vibrate(HAPTIC.squash);
       fly.innerHTML = '<span style="font-size:42px;line-height:1">💥</span>';
-      L.querySelector(".nd-fly-banner").textContent = "💥 SPLAT! Mosca scacciata!";
-      self.snack("Presa! 💥 Mosca scacciata con successo.");
+      L.querySelector(".nd-fly-banner").textContent = T("💥 SPLAT! Mosca scacciata!", "💥 SPLAT! Fly swatted!");
+      self.snack(T("Presa! 💥 Mosca scacciata con successo.", "Gotcha! 💥 Fly swatted successfully."));
       var b = L.querySelector(".nd-bottom");
-      b.appendChild(reactionRow("RISPONDI AL VOLO", function (e, t) { self.sendReaction(e, t); self.clearLayer(); }));
-      var c = document.createElement("button"); c.className = "nd-tbtn"; c.textContent = "Chiudi";
+      b.appendChild(reactionRow(T("RISPONDI AL VOLO", "QUICK REPLY"), function (e) { self.sendReaction(e); self.clearLayer(); }));
+      var c = document.createElement("button"); c.className = "nd-tbtn"; c.textContent = T("Chiudi", "Close");
       c.addEventListener("click", function () { self.clearLayer(); }); b.appendChild(c);
       self._to = setTimeout(function () { self.clearLayer(); }, 10000);
     });
@@ -371,8 +385,8 @@
     var L = this.layer; L.classList.add("on");
     var col = type === "FANGO" ? "#5D4037" : colorHex;
     L.innerHTML = '<canvas class="nd-scv"></canvas>' +
-      '<div class="nd-sch-head"><div class="nd-row nd-center">' + ic("clean", 20, "#38BDF8") + '<span class="nd-sch-t">Trascina il dito sullo schermo per pulire!</span></div>' +
-      '<div class="nd-prog"><div></div></div><div class="nd-row nd-sb"><span class="nd-sch-p">Pulizia: 0%</span><button class="nd-sch-all">Pulisci Tutto</button></div></div><div class="nd-bottom"></div>';
+      '<div class="nd-sch-head"><div class="nd-row nd-center">' + ic("clean", 20, "#38BDF8") + '<span class="nd-sch-t">' + T("Trascina il dito sullo schermo per pulire!", "Swipe your finger to wipe clean!") + '</span></div>' +
+      '<div class="nd-prog"><div></div></div><div class="nd-row nd-sb"><span class="nd-sch-p">' + T("Pulizia: 0%", "Cleaned: 0%") + '</span><button class="nd-sch-all">' + T("Pulisci Tutto", "Clean Screen") + '</button></div></div><div class="nd-bottom"></div>';
     var cv = L.querySelector("canvas"), g = cv.getContext("2d"), dpr = Math.min(3, window.devicePixelRatio || 1);
     cv.width = PW * dpr; cv.height = PH * dpr;
     var progress = 0, dist = 0, path = [], finished = false, shownRow = false, last = null;
@@ -392,21 +406,21 @@
     }
     function update() {
       L.querySelector(".nd-prog div").style.width = (progress * 100) + "%";
-      L.querySelector(".nd-sch-p").textContent = "Pulizia: " + Math.floor(progress * 100) + "%";
-      if (finished) L.querySelector(".nd-sch-t").textContent = "✨ Schermo pulito a lucido!";
+      L.querySelector(".nd-sch-p").textContent = T("Pulizia: ", "Cleaned: ") + Math.floor(progress * 100) + "%";
+      if (finished) L.querySelector(".nd-sch-t").textContent = T("✨ Schermo pulito a lucido!", "✨ Screen sparkling clean!");
       if ((finished || progress >= 0.75) && !shownRow) {
         shownRow = true;
         var b = L.querySelector(".nd-bottom");
-        b.appendChild(reactionRow("RISPONDI AL VOLO", function (e, t) { self.sendReaction(e, t); done(); }));
+        b.appendChild(reactionRow(T("RISPONDI AL VOLO", "QUICK REPLY"), function (e) { self.sendReaction(e); done(); }));
       }
       if (finished && !L.querySelector(".nd-tbtn")) {
-        var c = document.createElement("button"); c.className = "nd-tbtn"; c.textContent = "Fatto";
+        var c = document.createElement("button"); c.className = "nd-tbtn"; c.textContent = T("Fatto", "Done");
         c.addEventListener("click", done); L.querySelector(".nd-bottom").appendChild(c);
         self._to = setTimeout(done, 10000);
       }
       draw();
     }
-    function done() { self.snack("✨ Schermo pulito a lucido!"); self.clearLayer(); }
+    function done() { self.snack(T("✨ Schermo pulito a lucido!", "✨ Screen sparkling clean!")); self.clearLayer(); }
     function pos(e) { var r = cv.getBoundingClientRect(), s = r.width / PW; return { x: (e.clientX - r.left) / s, y: (e.clientY - r.top) / s }; }
     var dragging = false, lastTick = 0;
     cv.addEventListener("pointerdown", function (e) { dragging = true; last = pos(e); path.push({ x: last.x, y: last.y, brk: true }); cv.setPointerCapture(e.pointerId); });
@@ -446,7 +460,7 @@
     var L = this.layer; L.classList.add("on");
     L.innerHTML = '<div class="nd-glow-bg"></div><canvas class="nd-gcv"></canvas>' +
       '<div class="nd-glow-head"><div class="nd-row nd-sb"><div class="nd-row"><div class="nd-gico" style="background:' + hexA(color, 0.25) + '">' + ic("sparkle", 18, color) + '</div>' +
-      '<div><div class="nd-glow-t">✨ Glow Draw da ' + esc(sender) + '</div><div class="nd-glow-s">Tratto effimero • Svanisce tra poco</div></div></div>' +
+      '<div><div class="nd-glow-t">✨ Glow Draw ' + T("da ", "from ") + esc(sender) + '</div><div class="nd-glow-s">' + T("Tratto effimero • Svanisce tra poco", "Ephemeral stroke • Fading soon") + '</div></div></div>' +
       '<button class="nd-gx">' + ic("close", 16, "#CBD5E1") + '</button></div><div class="nd-gprog"><div style="background:' + color + '"></div></div></div><div class="nd-bottom g"></div>';
     var cv = L.querySelector("canvas"), g = cv.getContext("2d"), dpr = Math.min(3, window.devicePixelRatio || 1);
     var CW = PW - 48, CH = PH - 160; cv.width = CW * dpr; cv.height = CH * dpr;
@@ -461,13 +475,13 @@
     }
     self._raf = requestAnimationFrame(frame);
     L.querySelector(".nd-gx").addEventListener("click", function () { self.clearLayer(); });
-    L.querySelector(".nd-bottom").appendChild(reactionRow("REAGISCI AL VOLO A " + sender, function (e, t) { self.sendReaction(e, t); self.clearLayer(); }));
+    L.querySelector(".nd-bottom").appendChild(reactionRow(T("REAGISCI AL VOLO A ", "REACT INSTANTLY TO ") + sender, function (e) { self.sendReaction(e); self.clearLayer(); }));
   };
 
   // ---------- Banner reazione ----------
   PP.reactionBanner = function (emoji, text, sender) {
     var self = this, B = this.bannerEl;
-    B.innerHTML = '<div class="nd-rb"><div class="nd-rbe">' + emoji + '</div><div class="nd-grow"><div class="nd-rbs">Reazione da ' + esc(sender) + '</div><div class="nd-rbt">' + esc(text) + '</div></div><button class="nd-rbx">' + ic("close", 16, "#A5B4FC") + "</button></div>";
+    B.innerHTML = '<div class="nd-rb"><div class="nd-rbe">' + emoji + '</div><div class="nd-grow"><div class="nd-rbs">' + T("Reazione da ", "Reaction from ") + esc(sender) + '</div><div class="nd-rbt">' + esc(text) + '</div></div><button class="nd-rbx">' + ic("close", 16, "#A5B4FC") + "</button></div>";
     requestAnimationFrame(function () { B.classList.add("on"); });
     function hide() { B.classList.remove("on"); }
     B.querySelector(".nd-rb").addEventListener("click", hide);
@@ -488,11 +502,11 @@
   PP.openRecorder = function () {
     var self = this, taps = [], cur = null;
     var S = this.openSheet(
-      '<div class="nd-sh" style="padding:24px"><div class="nd-row nd-sb"><div><div class="nd-shT coral">Il Brivido</div><div class="nd-shS">Registra il ritmo per ' + esc(this.partner) + '</div></div><button class="nd-x">' + ic("close", 24, "#94A3B8") + "</button></div>" +
-      '<div class="nd-tl"></div><div class="nd-row nd-sb nd-stats"><div class="nd-row"><span class="nd-cdot"></span><span class="nd-cnt">Pronto alla cattura</span></div><span class="nd-dur">0.00 s</span></div>' +
-      '<div class="nd-padbox"><div class="nd-ring r1"></div><div class="nd-ring r2"></div><div class="nd-pad"><div class="nd-padi">' + ic("touch", 42, "#FF6688") + '</div><div class="nd-padt">TIENI PREMUTO</div><div class="nd-pads">Batti il tuo ritmo</div></div></div>' +
-      '<div class="nd-row nd-g10"><button class="nd-o2" data-k="prev" disabled>' + ic("play", 18) + '<span>Riascolta</span></button><button class="nd-o2" data-k="clr" disabled>' + ic("del", 18) + '<span>Cancella</span></button></div>' +
-      '<button class="nd-sendb" data-k="send" disabled>' + ic("send", 18) + "<span>Invia Brivido a " + esc(this.partner) + "</span></button></div>");
+      '<div class="nd-sh" style="padding:24px"><div class="nd-row nd-sb"><div><div class="nd-shT coral">Il Brivido</div><div class="nd-shS">' + T("Registra il ritmo per ", "Record the rhythm for ") + esc(this.partner) + '</div></div><button class="nd-x">' + ic("close", 24, "#94A3B8") + "</button></div>" +
+      '<div class="nd-tl"></div><div class="nd-row nd-sb nd-stats"><div class="nd-row"><span class="nd-cdot"></span><span class="nd-cnt"></span></div><span class="nd-dur">0.00 s</span></div>' +
+      '<div class="nd-padbox"><div class="nd-ring r1"></div><div class="nd-ring r2"></div><div class="nd-pad"><div class="nd-padi">' + ic("touch", 42, "#FF6688") + '</div><div class="nd-padt">' + T("TIENI PREMUTO", "PRESS & HOLD") + '</div><div class="nd-pads">' + T("Batti il tuo ritmo", "Tap out your rhythm") + '</div></div></div>' +
+      '<div class="nd-row nd-g10"><button class="nd-o2" data-k="prev" disabled>' + ic("play", 18) + '<span>' + T("Riascolta", "Replay") + '</span></button><button class="nd-o2" data-k="clr" disabled>' + ic("del", 18) + '<span>' + T("Cancella", "Clear") + '</span></button></div>' +
+      '<button class="nd-sendb" data-k="send" disabled>' + ic("send", 18) + "<span>" + T("Invia Brivido a ", "Send Brivido to ") + esc(this.partner) + "</span></button></div>");
     function waveform() {
       var c = taps.filter(function (t) { return t.up > t.down; }); if (!c.length) return [];
       var w = [0]; c.forEach(function (t, i) { w.push(t.up - t.down); if (i < c.length - 1) w.push(Math.max(20, c[i + 1].down - t.up)); }); return w;
@@ -500,14 +514,14 @@
     function refresh() {
       var w = waveform(), n = taps.length;
       var tl = S.querySelector(".nd-tl");
-      if (!n) tl.innerHTML = '<div class="nd-row nd-g8"><span class="nd-pdot"></span><span class="nd-tlh">Tocca e tieni premuto il pad per comporre il ritmo...</span></div>';
+      if (!n) tl.innerHTML = '<div class="nd-row nd-g8"><span class="nd-pdot"></span><span class="nd-tlh">' + T("Tocca e tieni premuto il pad per comporre il ritmo...", "Tap and hold the pad to compose your rhythm...") + '</span></div>';
       else tl.innerHTML = '<div class="nd-row nd-center">' + w.map(function (d, i) {
         if (i % 2 === 1) return '<span class="nd-seg" style="width:' + Math.max(8, Math.min(70, Math.floor(d / 20))) + 'px"></span>';
         if (i > 0) return '<span style="width:' + Math.max(4, Math.min(24, Math.floor(d / 35))) + 'px;flex-shrink:0"></span>';
         return "";
       }).join("") + "</div>";
       var dur = n ? ((taps[n - 1].up || taps[n - 1].down) - taps[0].down) / 1000 : 0;
-      S.querySelector(".nd-cnt").textContent = n ? n + " tocchi registrati" : "Pronto alla cattura";
+      S.querySelector(".nd-cnt").textContent = n ? T(n + " tocchi registrati", n + " taps recorded") : T("Pronto alla cattura", "Ready to capture");
       S.querySelector(".nd-cnt").classList.toggle("on", !!n);
       S.querySelector(".nd-cdot").style.display = n ? "inline-block" : "none";
       S.querySelector(".nd-dur").textContent = dur.toFixed(2) + " s";
@@ -519,13 +533,13 @@
     pad.addEventListener("pointerdown", function (e) {
       e.preventDefault(); pad.setPointerCapture(e.pointerId);
       cur = { down: Date.now(), up: 0 }; taps.push(cur);
-      box.classList.add("on"); S.querySelector(".nd-padt").textContent = "REGISTRAZIONE...";
+      box.classList.add("on"); S.querySelector(".nd-padt").textContent = T("REGISTRAZIONE...", "RECORDING...");
       try { navigator.vibrate && navigator.vibrate(25); } catch (x) {}
     });
     function up() {
       if (!cur) return;
       cur.up = cur.down + Math.max(40, Date.now() - cur.down); cur = null;
-      box.classList.remove("on"); S.querySelector(".nd-padt").textContent = "TIENI PREMUTO";
+      box.classList.remove("on"); S.querySelector(".nd-padt").textContent = T("TIENI PREMUTO", "PRESS & HOLD");
       try { navigator.vibrate && navigator.vibrate(25); } catch (x) {}
       refresh();
     }
@@ -540,10 +554,10 @@
   PP.openSchizzoPicker = function () {
     var self = this, type = "VERNICE", color = "#00E5FF";
     var COLORS = ["#00E5FF", "#FF1493", "#76FF03", "#FFEA00", "#A855F7"];
-    var S = this.openSheet('<div class="nd-sh" style="padding:20px 22px"><div class="nd-row nd-sb"><div><div class="nd-shT w20">🎨 Lancia uno Schizzo</div><div class="nd-shS s12">Sporca lo schermo di ' + esc(this.partner) + '! Dovrà pulirlo con il dito.</div></div><button class="nd-x">' + ic("close", 24, "#64748B") + "</button></div>" +
-      '<div class="nd-lbl">SCEGLI LA CONSISTENZA</div><div class="nd-row nd-g12"><button class="nd-opt" data-t="VERNICE"><span class="e">🎨</span><b>Vernice Fresca</b><i>Colorata e lucida</i></button><button class="nd-opt" data-t="FANGO"><span class="e">💩</span><b>Fango Denso</b><i>Marrone viscoso</i></button></div>' +
-      '<div class="nd-colsec"><div class="nd-lbl">COLORE VERNICE</div><div class="nd-row nd-sb nd-cols">' + COLORS.map(function (c) { return '<button class="nd-col" data-c="' + c + '" style="background:' + c + '"></button>'; }).join("") + "</div></div>" +
-      '<button class="nd-spara">' + ic("send", 18, "#fff") + "<span>Spara Schizzo!</span></button></div>");
+    var S = this.openSheet('<div class="nd-sh" style="padding:20px 22px"><div class="nd-row nd-sb"><div><div class="nd-shT w20">🎨 ' + T("Lancia uno Schizzo", "Throw a Schizzo") + '</div><div class="nd-shS s12">' + T("Sporca lo schermo di " + esc(this.partner) + "! Dovrà pulirlo con il dito.", "Splatter " + esc(this.partner) + "'s screen! They'll have to wipe it with a finger.") + '</div></div><button class="nd-x">' + ic("close", 24, "#64748B") + "</button></div>" +
+      '<div class="nd-lbl">' + T("SCEGLI LA CONSISTENZA", "CHOOSE THE TEXTURE") + '</div><div class="nd-row nd-g12"><button class="nd-opt" data-t="VERNICE"><span class="e">🎨</span><b>' + T("Vernice Fresca", "Fresh Paint") + '</b><i>' + T("Colorata e lucida", "Colorful and glossy") + '</i></button><button class="nd-opt" data-t="FANGO"><span class="e">💩</span><b>' + T("Fango Denso", "Thick Mud") + '</b><i>' + T("Marrone viscoso", "Sticky brown") + '</i></button></div>' +
+      '<div class="nd-colsec"><div class="nd-lbl">' + T("COLORE VERNICE", "PAINT COLOR") + '</div><div class="nd-row nd-sb nd-cols">' + COLORS.map(function (c) { return '<button class="nd-col" data-c="' + c + '" style="background:' + c + '"></button>'; }).join("") + "</div></div>" +
+      '<button class="nd-spara">' + ic("send", 18, "#fff") + "<span>" + T("Spara Schizzo!", "Fire Schizzo!") + "</span></button></div>");
     function refresh() {
       S.querySelectorAll(".nd-opt").forEach(function (o) {
         var on = o.dataset.t === type; o.classList.toggle("on", on);
@@ -565,10 +579,10 @@
     var self = this;
     var PAL = [["#00E5FF", "#00F0FF"], ["#FF4B6E", "#FF3366"], ["#FFB300", "#FFB703"], ["#00E676", "#00F5D4"], ["#A855F7", "#9D4EDD"]];
     var sel = PAL[0], strokes = [], cur = null;
-    var S = this.openSheet('<div class="nd-sh" style="padding:18px 20px"><div class="nd-row nd-sb"><div class="nd-row"><div class="nd-gico2"></div><div><div class="nd-shT w17">Glow Draw ✨</div><div class="nd-shS s12">Disegna per ' + esc(this.partner) + ' • Svanirà in 6 secondi</div></div></div><button class="nd-x2">' + ic("close", 16, "#94A3B8") + "</button></div>" +
+    var S = this.openSheet('<div class="nd-sh" style="padding:18px 20px"><div class="nd-row nd-sb"><div class="nd-row"><div class="nd-gico2"></div><div><div class="nd-shT w17">Glow Draw ✨</div><div class="nd-shS s12">' + T("Disegna per ", "Draw for ") + esc(this.partner) + T(" • Svanirà in 6 secondi", " • Fades in 6 seconds") + '</div></div></div><button class="nd-x2">' + ic("close", 16, "#94A3B8") + "</button></div>" +
       '<div class="nd-row nd-se nd-pal">' + PAL.map(function (p, i) { return '<button class="nd-pc" data-i="' + i + '" style="background:' + p[1] + '"></button>'; }).join("") + "</div>" +
-      '<div class="nd-dbox"><canvas></canvas><div class="nd-dh">Disegna qualcosa con il dito ✨<br>Un cuore, una parola o un simbolo</div></div>' +
-      '<div class="nd-row nd-g10"><button class="nd-o3" data-k="clr" disabled>' + ic("del", 16) + '<span>Cancella</span></button><button class="nd-gsend" data-k="send" disabled>' + ic("send", 16, "#000") + "<span>Invia al Neon ✨</span></button></div></div>");
+      '<div class="nd-dbox"><canvas></canvas><div class="nd-dh">' + T("Disegna qualcosa con il dito ✨<br>Un cuore, una parola o un simbolo", "Draw something with your finger ✨<br>A heart, a word or a symbol") + '</div></div>' +
+      '<div class="nd-row nd-g10"><button class="nd-o3" data-k="clr" disabled>' + ic("del", 16) + '<span>' + T("Cancella", "Clear") + '</span></button><button class="nd-gsend" data-k="send" disabled>' + ic("send", 16, "#000") + "<span>" + T("Invia al Neon ✨", "Send in Neon ✨") + "</span></button></div></div>");
     var box = S.querySelector(".nd-dbox"), cv = box.querySelector("canvas"), g = cv.getContext("2d"), dpr = Math.min(3, window.devicePixelRatio || 1);
     var CW = PW - 40, CH = 290; cv.width = CW * dpr; cv.height = CH * dpr;
     function draw() {
@@ -612,6 +626,7 @@
   alex.other = sam; sam.other = alex;
   function fitAll() { alex.fit(); sam.fit(); }
   window.__ndFit = fitAll;
+  window.__ndLang = function () { [alex, sam].forEach(function (ph) { ph.renderHome(); }); };
   window.addEventListener("resize", fitAll); fitAll();
   setInterval(function () { alex.renderHistory(); sam.renderHistory(); }, 60000);
 })();
