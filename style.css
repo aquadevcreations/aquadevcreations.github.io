@@ -521,3 +521,17 @@ code{background:#eef3f2;padding:1px 6px;border-radius:5px;font-size:.9em}
 .wb-endst{display:flex;align-items:center;gap:6px;font-size:18px;font-weight:900}
 .wb-endc p{margin:0;font-size:14px;font-weight:800;line-height:20px;color:#3E200C}
 .wb-endc .wb-next,.wb-endc .wb-replay{width:100%;flex:none}
+/* ---- Versioni / changelog ---- */
+.vlist{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.ver{border:1px solid var(--line);border-radius:14px;background:#fff;overflow:hidden}
+.ver summary{list-style:none;display:flex;align-items:center;gap:10px;padding:14px 16px;cursor:pointer;user-select:none}
+.ver summary::-webkit-details-marker{display:none}
+.ver summary:hover{background:#f4f8f7}
+.vnum{font-weight:800;font-size:1.05rem}
+.vbadge{background:var(--teal);color:#fff;font-size:.72rem;font-weight:800;letter-spacing:.3px;padding:3px 8px;border-radius:999px;text-transform:uppercase}
+.vchev{margin-left:auto;width:9px;height:9px;border-right:2px solid #7a8b88;border-bottom:2px solid #7a8b88;transform:rotate(45deg);transition:transform .2s;margin-top:-4px}
+.ver[open] .vchev{transform:rotate(-135deg);margin-top:4px}
+.vbody{padding:0 16px 14px;border-top:1px solid var(--line)}
+.vbody ul{margin:12px 0 0;padding-left:20px}
+.vbody li{margin:6px 0;line-height:1.5}
+.vtitle{margin:12px 0 0;font-weight:700}

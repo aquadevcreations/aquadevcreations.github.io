@@ -525,6 +525,7 @@ def sidebar(app, active):
         (f"{app['slug']}.html", "Panoramica", "Overview", "overview"),
         (f"{app['slug']}-privacy.html", "Privacy Policy", "Privacy Policy", "privacy"),
         (f"{app['slug']}-delete-data.html", "Cancellazione dati", "Data deletion", "delete"),
+        (f"{app['slug']}-versions.html", "Versioni", "Versions", "versions"),
         (f"{app['slug']}-support.html", "Supporto", "Support", "support"),
     ]
     nav = "".join(
@@ -677,6 +678,69 @@ def support(app):
     return page(app, "support", f"Support — {app['name']}", f"Support for {app['name']} by {DEV}.", body)
 
 
+# ---- Changelog per app (più recente in cima). Ogni voce: (versione, [(it, en), ...], titolo it/en opzionale) ----
+CHANGELOGS = {
+    "pixel-fishing": [
+        ("1.2.1", None, [
+            ("Nuova schermata iniziale arcade con pulsanti Start e Impostazioni e scritta retrò lampeggiante", "Brand new arcade title screen with Start, Settings buttons and retro blinking prompt"),
+            ("Fisica dinamica del salto del pesce: il galleggiante esce dall'acqua insieme al pesce e la lenza disegna un arco realistico a mezz'aria", "Dynamic fish jump physics: the bobber now lifts out of the water with the fish and the line arcs realistically in mid-air"),
+            ("Lenza più morbida e curva in modo naturale durante l'attesa del morso", "Smoother, natural curved fishing line while waiting for bites"),
+            ("Tensione della lenza bilanciata durante la lotta col pesce", "Balanced line tension mechanics during the reel fight"),
+            ("Icona dell'app centrata e proporzionata per i launcher Android", "Centered and properly proportioned app icon for Android launchers"),
+        ]),
+        ("1.2", None, [
+            ("Il pesce salta fuori dall'acqua durante il recupero e alla cattura, con schizzi, scossa dello schermo e scintille", "Fish jumps out of water during reeling and at catch, with splash, screen shake and sparkles"),
+            ("La scena del lago riempie tutto lo schermo sopra la console", "Lake scene fills the full screen above the console"),
+            ("Nel negozio l'equipaggiamento si attiva all'istante", "Shop equip feedback is now instant"),
+            ("Italiano e inglese scelti automaticamente in base alla lingua del telefono", "Italian/English localization auto-detected from phone language"),
+            ("Nuova icona dell'app", "New app icon"),
+        ]),
+        ("1.11", None, [
+            ("Corretta l'icona dell'app su Android (rimosso il watermark predefinito del motore)", "Fixed app icon display on Android (removed default engine watermark)"),
+            ("Dimensioni di attrezzatura e galleggianti ribilanciate per un aspetto più pulito e naturale", "Rebalanced gear and bobber visual sizing for a cleaner, natural look"),
+            ("HUD (monete, catture, menu rapidi) integrato direttamente nel cruscotto della console retrò", "Integrated HUD (coins, catches, quick-access menus) directly into the retro console dashboard"),
+            ("Negozio e mappa ampliati, con schede più grandi e leggibili", "Expanded Gear Shop & Map menus with larger, clearer interface cards"),
+            ("Miglioramenti generali di stabilità e correzioni di bug", "General stability improvements and bug fixes"),
+        ]),
+        ("1.1", None, [
+            ("<strong>Nuovo negozio dell'attrezzatura:</strong> compra ed equipaggia canne, lenze, galleggianti ed esche. I potenziamenti migliorano i tempi di abboccata, la resistenza della lenza e la probabilità di pesci rari.", "<strong>New Gear Shop:</strong> buy and equip Rods, Lines, Bobbers and Baits. Upgrades improve bite times, line durability and rare fish chances."),
+            ("<strong>Nuovo bioma \"Misty Bayou\":</strong> sblocca e raggiungi una nuova palude con lucciole e pioggia in pixel.", "<strong>New biome \"Misty Bayou\":</strong> unlock and travel to a brand new swamp location featuring ambient fireflies and pixel rain."),
+            ("<strong>Fisica di pesca migliorata:</strong> abboccate più fluide, recupero della lenza con curva realistica e schizzi d'acqua dinamici.", "<strong>Enhanced fishing physics:</strong> smoother bobber strikes, realistic curved line reeling motion and dynamic water splash effects."),
+            ("<strong>Correzioni e rifiniture:</strong> risolti i problemi delle particelle di pioggia e migliorata la stabilità generale.", "<strong>Bug fixes &amp; polish:</strong> resolved rain particle issues and improved overall stability."),
+        ]),
+        ("1.0", ("Prima beta chiusa di Pixel Fishing!", "Initial Closed Beta Release of Pixel Fishing!"), [
+            ("Pesca rilassante in pixel art retrò", "Experience relaxing retro pixel-art fishing gameplay"),
+            ("Tante specie di pesci da scoprire e meccaniche di recupero", "Discover multiple fish species and reel mechanics"),
+            ("Meteo dinamico ed effetti sonori originali", "Dynamic weather and custom sound effects"),
+            ("Gioco offline con progressi salvati sul telefono", "Offline play with full local progression"),
+            ("Miglioramenti delle prestazioni e correzioni di bug", "Performance improvements and bug fixes"),
+        ]),
+    ],
+}
+
+
+def versions(app):
+    log = CHANGELOGS.get(app["slug"], [])
+    if not log:
+        inner = ('<div class="box">' + bi("Il registro delle versioni di quest'app arriverà a breve.", "This app's version history is coming soon.", "p") + '</div>')
+    else:
+        items = []
+        for i, (ver, title, notes) in enumerate(log):
+            latest = bi("Ultima", "Latest", "span").replace('class="it"', 'class="vbadge it"').replace('class="en"', 'class="vbadge en"') if i == 0 else ""
+            head_t = bi(title[0], title[1], "p").replace('<p class="it">', '<p class="vtitle it">').replace('<p class="en">', '<p class="vtitle en">') if title else ""
+            lis_it = "".join(f"<li>{it}</li>" for it, en in notes)
+            lis_en = "".join(f"<li>{en}</li>" for it, en in notes)
+            items.append(f'<details class="ver"{" open" if i == 0 else ""}><summary><span class="vnum">v{ver}</span>{latest}<span class="vchev" aria-hidden="true"></span></summary>'
+                         f'<div class="vbody">{head_t}<ul class="it">{lis_it}</ul><ul class="en">{lis_en}</ul></div></details>')
+        inner = '<div class="vlist">' + "".join(items) + '</div>'
+    body = f"""<article class="doc">
+<h1>{bi("Versioni", "Versions")} — {app['name']}</h1>
+{bi("Le novità di ogni aggiornamento. Tocca una versione per vedere cosa è cambiato.", "What's new in every update. Tap a version to see what changed.", "p").replace('<p class="it">','<p class="updated it">').replace('<p class="en">','<p class="updated en">')}
+{inner}
+</article>"""
+    return page(app, "versions", f"Versions — {app['name']}", f"Changelog and version history of {app['name']} by {DEV}.", body)
+
+
 def home():
     cards = ""
     for a in APPS:
@@ -719,4 +783,5 @@ if __name__ == "__main__":
         write(f"{a['slug']}.html", page(a, "overview", f"{a['name']} — aquadev creations", f"{a['name']}: {a['tagline'][1]}", overview(a)))
         write(f"{a['slug']}-privacy.html", privacy(a))
         write(f"{a['slug']}-delete-data.html", delete(a))
+        write(f"{a['slug']}-versions.html", versions(a))
         write(f"{a['slug']}-support.html", support(a))
