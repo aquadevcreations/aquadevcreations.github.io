@@ -474,7 +474,7 @@ APPS = [
 # ------------------------------------------------------------------ TEMPLATES
 def head(title, desc, prefix):
     return f"""<!doctype html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -484,7 +484,7 @@ def head(title, desc, prefix):
 {FONTS}
 <link rel="stylesheet" href="style.css">
 </head>
-<body data-lang="it">
+<body data-lang="en">
 """
 
 
