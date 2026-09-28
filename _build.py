@@ -350,6 +350,124 @@ APPS = [
 """,
   response=("entro 48 ore", "within 48 hours"),
  ),
+
+ dict(
+  slug="nudge", name="Nudge", icon="nudge-icon.png",
+  shots=["nudge-1.jpg", "nudge-2.jpg", "nudge-3.jpg"], status="test",
+  package="com.aquascape.nudge",
+  play="https://play.google.com/store/apps/details?id=com.aquascape.nudge",
+  group=dict(email="nudge-app@googlegroups.com", url="https://groups.google.com/g/nudge-app"),
+  tagline=("Sentiti vicino alla persona che ami, ovunque ti trovi.", "Feel close to the one you love, wherever you are."),
+  intro=("Nudge è l'app intima ed esclusiva per coppie che trasforma il tocco a distanza in un'esperienza sensoriale reale. Niente chat caotiche o distrazioni dei social: solo uno spazio privato e protetto riservato a voi due. Accoppia il tuo telefono con quello del partner in pochi secondi e inizia a scambiare tocchi invisibili ma indimenticabili.",
+         "Nudge is the intimate, exclusive app for couples that turns a long-distance touch into a real sensory experience. No chaotic chats, no social media distractions: just a private, protected space for the two of you. Pair your phone with your partner's in seconds and start sharing invisible but unforgettable touches."),
+  features=([
+    "<strong>⚡ Il Brivido</strong>: componi un ritmo di vibrazione sul pad tattile. Il telefono del partner vibra con il ritmo esatto del tuo tocco.",
+    "<strong>🪰 La Mosca</strong>: fai atterrare una mosca birichina sullo schermo del partner, che ronza finché non la schiaccia con il dito.",
+    "<strong>🎨 Lo Schizzo</strong>: lancia una macchia di fango o vernice fluo sullo schermo dell'altro, che dovrà pulirla strofinando col dito.",
+    "<strong>💨 Il Soffio</strong>: una carezza di luce e una vibrazione delicata per dire \"ti sto pensando\" senza parole.",
+    "<strong>✨ Glow Canvas al neon</strong>: disegna in tempo reale su una tela luminosa ed effimera. Un cuore, una parola, un segno che brilla e poi svanisce.",
+    "<strong>💬 Reazioni immediate</strong>: \"Ti penso\", \"Arrivo\", \"Bacio\", che compaiono subito sul display del partner.",
+    "<strong>🔒 Privacy al primo posto</strong>: connessione 1 a 1 con codice di accoppiamento privato, nessuna condivisione di dati personali con terzi, interazioni effimere.",
+  ], [
+    "<strong>⚡ The Thrill</strong>: compose a vibration rhythm on the touch pad. Your partner's phone vibrates with the exact rhythm of your touch.",
+    "<strong>🪰 The Fly</strong>: land a cheeky fly on your partner's screen; it buzzes around until they squash it with a finger.",
+    "<strong>🎨 The Splash</strong>: throw a splat of mud or neon paint on the other's screen; they'll have to rub it clean.",
+    "<strong>💨 The Breath</strong>: a soft glow and a gentle vibration to say \"thinking of you\" without words.",
+    "<strong>✨ Neon Glow Canvas</strong>: draw in real time on a glowing, ephemeral canvas. A heart, a word, a mark that shines and then fades.",
+    "<strong>💬 Instant reactions</strong>: \"Thinking of you\", \"On my way\", \"Kiss\", shown right away on your partner's display.",
+    "<strong>🔒 Privacy first</strong>: 1-to-1 connection with a private pairing code, no personal data shared with third parties, ephemeral interactions.",
+  ]),
+  updated=("28 settembre 2026", "September 28, 2026"),
+  privacy_it=f"""
+<h2>1. Introduzione e principi di riservatezza</h2>
+<p>Questa informativa descrive come l'applicazione <strong>Nudge</strong>, sviluppata da {DEV}, raccoglie, usa e protegge le informazioni degli utenti.</p>
+<p>Nudge è pensata per una connessione sensoriale ed effimera tra coppie. Non chiediamo dati sensibili, non tracciamo la tua posizione, non ascoltiamo l'audio, non memorizziamo foto personali e non vendiamo mai dati a terzi per scopi pubblicitari.</p>
+<h2>2. Dati raccolti e finalità</h2>
+<p>Per far funzionare le micro-interazioni in tempo reale e consegnare le notifiche, l'app raccoglie solo questi dati:</p>
+<ul>
+<li><strong>Identificativo utente anonimo (User ID).</strong> All'apertura dell'app viene generato un identificativo casuale tramite Firebase Authentication. Serve a mantenere il collegamento esclusivo tra i due partner tramite il codice di accoppiamento.</li>
+<li><strong>Nome o nickname (facoltativo).</strong> Il nome che scegli quando inviti il partner, visibile solo a lui o a lei. Puoi usare un soprannome qualsiasi.</li>
+<li><strong>Codice di accoppiamento.</strong> Il codice privato che collega i due telefoni.</li>
+<li><strong>Token del dispositivo (FCM Registration Token).</strong> Un token tecnico fornito da Firebase Cloud Messaging, necessario per consegnare notifiche ed effetti sensoriali (Brivido, Mosca, Schizzo, Soffio, Glow Canvas) al telefono del partner anche quando l'app è in background.</li>
+<li><strong>Dati di interazione effimeri.</strong> Le interazioni inviate (ritmi di vibrazione, coordinate dei tratti sul canvas, micro-reazioni) transitano sui server di Google Cloud Firestore per sincronizzare i due dispositivi in tempo reale. Sono pensate per essere effimere.</li>
+</ul>
+<h2>3. Autorizzazioni del dispositivo</h2>
+<ul>
+<li><strong>Vibrazione</strong>: per riprodurre il Brivido e il Soffio inviati dal partner.</li>
+<li><strong>Notifiche e servizio in background</strong>: Nudge resta in ascolto con una notifica discreta, così i trilli arrivano subito anche a schermo spento.</li>
+<li><strong>Visualizzazione sopra altre app</strong> (facoltativa): per mostrare la Mosca e lo Schizzo anche quando l'app è chiusa. Non viene mai usata per leggere cosa c'è sullo schermo.</li>
+</ul>
+<h2>4. Sicurezza e crittografia</h2>
+<p>Tutte le comunicazioni tra l'app e i server avvengono tramite protocolli cifrati HTTPS/TLS. I dati sono custoditi sull'infrastruttura di Google Firebase / Google Cloud Platform, conforme ai principali standard di sicurezza (ISO 27001, SOC 1/2/3) e al GDPR.</p>
+<h2>5. Fornitori di servizi terzi</h2>
+<p>L'app usa servizi di Google LLC:</p>
+<ul>
+<li><strong>Google Play Services</strong>: distribuzione e servizi di base Android.</li>
+<li><strong>Google Firebase</strong> (Authentication, Cloud Firestore, Cloud Messaging): accoppiamento sicuro e consegna istantanea delle notifiche. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Privacy e sicurezza di Firebase</a></li>
+</ul>
+<h2>6. Eliminazione dei dati</h2>
+<p>Puoi chiedere in qualsiasi momento la cancellazione totale e definitiva dei dati associati al tuo dispositivo. La procedura è nella pagina <a href="{{DEL}}">Cancellazione dati</a>.</p>
+<h2>7. Minori</h2>
+<p>L'app non è rivolta ai minori di 13 anni e non raccoglie consapevolmente dati di minori.</p>
+""",
+  privacy_en=f"""
+<h2>1. Introduction and privacy principles</h2>
+<p>This policy describes how the <strong>Nudge</strong> app, developed by {DEV}, collects, uses and protects your information.</p>
+<p>Nudge is designed for ephemeral, sensory connection between couples. We do not ask for sensitive data, track your location, record audio or store personal photos, and we never sell data to third parties for advertising.</p>
+<h2>2. Data we collect and why</h2>
+<p>To run real-time micro-interactions and deliver notifications, the app collects only the following:</p>
+<ul>
+<li><strong>Anonymous user ID.</strong> A random identifier generated through Firebase Authentication when you open the app, used to keep the exclusive link between the two partners via the pairing code.</li>
+<li><strong>Name or nickname (optional).</strong> The name you choose when inviting your partner, visible only to them. Any nickname will do.</li>
+<li><strong>Pairing code.</strong> The private code that links the two phones.</li>
+<li><strong>Device token (FCM registration token).</strong> A technical token from Firebase Cloud Messaging, needed to deliver notifications and sensory effects (Thrill, Fly, Splash, Breath, Glow Canvas) to your partner's phone even when the app is in the background.</li>
+<li><strong>Ephemeral interaction data.</strong> The interactions you send (vibration rhythms, canvas stroke coordinates, micro-reactions) pass through Google Cloud Firestore to sync both devices in real time. They are designed to be ephemeral.</li>
+</ul>
+<h2>3. Device permissions</h2>
+<ul>
+<li><strong>Vibration</strong>: to play the Thrill and Breath sent by your partner.</li>
+<li><strong>Notifications and background service</strong>: Nudge keeps listening with a discreet notification so nudges arrive instantly, even with the screen off.</li>
+<li><strong>Display over other apps</strong> (optional): to show the Fly and the Splash even when the app is closed. It is never used to read what is on your screen.</li>
+</ul>
+<h2>4. Security and encryption</h2>
+<p>All communication between the app and the servers uses encrypted HTTPS/TLS. Data is stored on Google Firebase / Google Cloud Platform infrastructure, which complies with major security standards (ISO 27001, SOC 1/2/3) and the GDPR.</p>
+<h2>5. Third-party service providers</h2>
+<p>The app uses services from Google LLC:</p>
+<ul>
+<li><strong>Google Play Services</strong>: distribution and core Android services.</li>
+<li><strong>Google Firebase</strong> (Authentication, Cloud Firestore, Cloud Messaging): secure pairing and instant notification delivery. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase privacy and security</a></li>
+</ul>
+<h2>6. Data deletion</h2>
+<p>You can request the complete, permanent deletion of the data associated with your device at any time. See the <a href="{{DEL}}">Data deletion</a> page.</p>
+<h2>7. Children</h2>
+<p>The app is not directed at children under 13 and does not knowingly collect data from children.</p>
+""",
+  delete_server=True,
+  delete_subject="Richiesta Cancellazione Dati - Nudge",
+  delete_it=f"""
+<p>Nudge conserva su Firebase alcuni dati tecnici legati al tuo dispositivo: identificativo anonimo, nickname, codice di accoppiamento, token delle notifiche e interazioni in transito. Puoi chiederne la cancellazione totale e definitiva in qualsiasi momento, in due modi.</p>
+<ol class="steps">
+<li><strong>Dall'app:</strong> apri Nudge, vai in <strong>Impostazioni / Connessione</strong> e tocca <strong>"Scollega Coppia"</strong>. I due telefoni vengono separati subito e il collegamento viene rimosso dai server.</li>
+<li><strong>Via email</strong> a <a href="mailto:{EMAIL}">{EMAIL}</a> (o con il pulsante qui sotto), con oggetto <code>Richiesta Cancellazione Dati - Nudge</code>. Indica il tuo <strong>codice coppia</strong> o l'<strong>ID dispositivo</strong> che trovi nelle info dell'app.</li>
+</ol>
+<h3>Cosa viene cancellato</h3>
+<p>Identificativo anonimo, nickname, codice di accoppiamento, token delle notifiche ed eventuali interazioni ancora presenti nel database Firebase.</p>
+<h3>Tempi</h3>
+<p>I dati vengono eliminati in modo permanente <strong>entro 7 giorni lavorativi</strong> dalla ricezione della richiesta.</p>
+""",
+  delete_en=f"""
+<p>Nudge stores some technical data linked to your device on Firebase: anonymous ID, nickname, pairing code, notification token and interactions in transit. You can request their complete, permanent deletion at any time, in two ways.</p>
+<ol class="steps">
+<li><strong>In the app:</strong> open Nudge, go to <strong>Settings / Connection</strong> and tap <strong>"Unpair"</strong>. The two phones are disconnected immediately and the link is removed from the servers.</li>
+<li><strong>By email</strong> to <a href="mailto:{EMAIL}">{EMAIL}</a> (or with the button below), with the subject <code>Data Deletion Request - Nudge</code>. Include your <strong>couple code</strong> or the <strong>device ID</strong> shown in the app info.</li>
+</ol>
+<h3>What is deleted</h3>
+<p>Anonymous ID, nickname, pairing code, notification token and any interactions still in the Firebase database.</p>
+<h3>Timing</h3>
+<p>Data is permanently deleted <strong>within 7 business days</strong> of receiving the request.</p>
+""",
+  response=("entro 7 giorni lavorativi", "within 7 business days"),
+ ),
 ]
 
 
@@ -421,14 +539,26 @@ def overview(app):
     feats_it = "".join(f"<li>{f}</li>" for f in app["features"][0])
     feats_en = "".join(f"<li>{f}</li>" for f in app["features"][1])
     btns = ""
-    if app["play"]:
+    if app.get("group"):
+        pass  # i pulsanti sono nei passaggi per i tester, sotto
+    elif app["play"]:
         btns += f'<a class="btn primary" href="{app["play"]}" target="_blank" rel="noopener">▶ {bi("Scarica da Google Play", "Get it on Google Play")}</a>'
     else:
         btns += f'<a class="btn primary" href="{mailto("Voglio provare " + app["name"] + " / I want to test " + app["name"])}">{bi("Diventa tester", "Become a tester")}</a>'
     for href, it, en in app.get("extra_btns", []):
         btns += f'<a class="btn" href="{href}" target="_blank" rel="noopener">{bi(it, en)}</a>'
     test_note = ""
-    if app["status"] == "test":
+    if app.get("group"):
+        g = app["group"]
+        test_note = f"""<div class="box">
+{bi("<strong>L'app è in test chiuso.</strong> Per provarla bastano due passaggi, con lo stesso account Google che usi sul Play Store:", "<strong>The app is in closed testing.</strong> Two steps to try it, using the same Google account you use on the Play Store:", "p")}
+<ol class="steps">
+<li>{bi("Unisciti al gruppo dei tester", "Join the testers group")} <span class="muted">({g['email']})</span><br><a class="btn primary" style="margin-top:8px" href="{g['url']}" target="_blank" rel="noopener">{bi("Unisciti al gruppo Google", "Join the Google Group")}</a></li>
+<li>{bi("Poi apri la pagina Google Play e installa l'app", "Then open the Google Play page and install the app")}<br><a class="btn" style="margin-top:8px" href="{app['play']}" target="_blank" rel="noopener">▶ {bi("Apri su Google Play", "Open on Google Play")}</a></li>
+</ol>
+{bi("Se Google Play dice che l'app non è disponibile, aspetta qualche minuto dopo esserti iscritto al gruppo e riprova.", "If Google Play says the app isn't available, wait a few minutes after joining the group and try again.", "p").replace('<p class="it">','<p class="it muted" style="margin:0;font-size:.9rem">').replace('<p class="en">','<p class="en muted" style="margin:0;font-size:.9rem">')}
+</div>"""
+    elif app["status"] == "test":
         test_note = bi("Il gioco è in test chiuso su Google Play. Scrivici per entrare tra i tester e provarlo in anteprima.",
                        "The game is in closed testing on Google Play. Write to us to join the testers and try it early.", "p")
         test_note = test_note.replace('<p class="it">', '<p class="it muted" style="margin-bottom:10px">').replace('<p class="en">', '<p class="en muted" style="margin-bottom:10px">')
@@ -523,7 +653,7 @@ def home():
     cards = ""
     for a in APPS:
         cards += f"""<a class="app-card" href="{a['slug']}.html">
-  <div class="cover"><img src="{a['shots'][0]}" alt=""></div>
+  <div class="cover">{f'<img src="{a["shots"][0]}" alt="">' if a["shots"] else f'<div class="cover-icon" style="background:{a.get("cover_bg","#eef3f2")}"><img src="{a["icon"]}" alt=""></div>'}</div>
   <div class="body">
     <div class="row"><img src="{a['icon']}" alt=""><div><h2>{a['name']}</h2>{badge(a)}</div></div>
     {bi(a['tagline'][0], a['tagline'][1], 'p')}
