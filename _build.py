@@ -44,6 +44,7 @@ APPS = [
  dict(
   slug="wobblebrain", name="Wobblebrain", icon="wobblebrain-icon.jpg",
   shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="test",
+  group=dict(email="wobblebrain_closedtest@googlegroups.com", url="https://groups.google.com/g/wobblebrain_closedtest"),
   package="com.aquascape.wobblebrain.puzzle",
   play="https://play.google.com/store/apps/details?id=com.aquascape.wobblebrain.puzzle",
   tagline=("Il puzzle della bilancia cervellotica.", "The brain-teasing balance puzzle."),
@@ -267,7 +268,9 @@ APPS = [
  dict(
   slug="pixel-fishing", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
   shots=["pixelfishing-1.jpg", "pixelfishing-2.jpg"], status="test",
-  package="com.aquascape.pixelfishing", play=None,
+  package="com.aquascape.pixelfishing",
+  play="https://play.google.com/store/apps/details?id=com.aquascape.pixelfishing",
+  group=dict(email="pixelfishing@googlegroups.com", url="https://groups.google.com/g/pixelfishing"),
   tagline=("Pesca in pixel art retrò, per staccare ovunque tu sia.", "Retro pixel-art fishing, to unwind wherever you are."),
   intro=("Prepara la canna, esplora gli specchi d'acqua e metti alla prova i riflessi per catturare pesci unici, guadagnare monete e completare la collezione.",
          "Grab your rod, explore the waters and test your reflexes to catch unique fish, earn coins and complete your collection."),
