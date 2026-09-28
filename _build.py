@@ -267,7 +267,7 @@ APPS = [
 
  dict(
   slug="pixel-fishing", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
-  shots=["pixelfishing-1.jpg", "pixelfishing-2.jpg"], status="test",
+  shots=["pixelfishing-1.jpg", "pixelfishing-2.jpg"], cover="pixelfishing-cover.jpg", status="test",
   package="com.aquascape.pixelfishing",
   demo="pixelfishing",
   play="https://play.google.com/store/apps/details?id=com.aquascape.pixelfishing",
@@ -681,7 +681,7 @@ def home():
     cards = ""
     for a in APPS:
         cards += f"""<a class="app-card" href="{a['slug']}.html">
-  <div class="cover">{f'<img src="{a["shots"][0]}" alt="">' if a["shots"] else f'<div class="cover-icon" style="background:{a.get("cover_bg","#eef3f2")}"><img src="{a["icon"]}" alt=""></div>'}</div>
+  <div class="cover">{f'<img src="{a.get("cover") or a["shots"][0]}" alt="">' if a["shots"] else f'<div class="cover-icon" style="background:{a.get("cover_bg","#eef3f2")}"><img src="{a["icon"]}" alt=""></div>'}</div>
   <div class="body">
     <div class="row"><img src="{a['icon']}" alt=""><div><h2>{a['name']}</h2>{badge(a)}</div></div>
     {bi(a['tagline'][0], a['tagline'][1], 'p')}

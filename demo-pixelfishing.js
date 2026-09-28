@@ -6,7 +6,7 @@
   root.innerHTML =
     '<div class="pf-frame">' +
       '<button class="pf-start" type="button">' +
-        '<img src="pixelfishing-1.jpg" alt="Pixel Fishing">' +
+        '<img src="pixelfishing-cover.jpg" alt="Pixel Fishing">' +
         '<span class="pf-play">▶ <b class="pf-lbl"></b></span>' +
         '<span class="pf-size"></span>' +
       '</button>' +
