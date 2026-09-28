@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Pixel Fishing — play in your browser</title>
+<link rel="icon" href="../favicon.png">
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#0b1a2e;overflow:hidden;font-family:system-ui,sans-serif}
+  #unity-canvas{position:fixed;inset:0;width:100%;height:100%;background:#0b1a2e;display:block;touch-action:none}
+  #loading{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:#0b1a2e;color:#cfe8ff}
+  #loading img{width:96px;height:96px;border-radius:22px;image-rendering:pixelated}
+  #bar{width:180px;height:10px;border:2px solid #5cc8ff;border-radius:3px;padding:2px}
+  #fill{height:100%;width:0;background:#ffd23f;border-radius:1px;transition:width .2s}
+  #pct{font-size:12px;letter-spacing:2px;opacity:.8}
+  #err{position:fixed;left:50%;top:40%;transform:translateX(-50%);background:#fff;color:#111;padding:14px 18px;border-radius:10px;max-width:80%;text-align:center;display:none;font-size:14px}
+</style>
+</head>
+<body>
+<canvas id="unity-canvas" tabindex="-1"></canvas>
+<div id="loading"><img src="TemplateData/pf-icon.jpg" alt=""><div id="bar"><div id="fill"></div></div><div id="pct">LOADING…</div></div>
+<div id="err"></div>
+<script>
+  var canvas = document.getElementById("unity-canvas");
+  var config = {
+    arguments: [],
+    dataUrl: "Build/PixelFishingWeb.data",
+    frameworkUrl: "Build/PixelFishingWeb.framework.js",
+    codeUrl: "Build/PixelFishingWeb.wasm",
+    streamingAssetsUrl: "StreamingAssets",
+    companyName: "AquaDev Creations",
+    productName: "Pixel Fishing",
+    productVersion: "1.2",
+    showBanner: function (msg, type) { if (type === "error") { var e = document.getElementById("err"); e.textContent = msg; e.style.display = "block"; } }
+  };
+  if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) { config.devicePixelRatio = Math.min(window.devicePixelRatio || 1, 2); }
+  var s = document.createElement("script");
+  s.src = "Build/PixelFishingWeb.loader.js";
+  s.onload = function () {
+    createUnityInstance(canvas, config, function (p) {
+      document.getElementById("fill").style.width = Math.round(p * 100) + "%";
+      document.getElementById("pct").textContent = "LOADING " + Math.round(p * 100) + "%";
+    }).then(function () {
+      document.getElementById("loading").style.display = "none";
+    }).catch(function (m) {
+      var e = document.getElementById("err"); e.textContent = m; e.style.display = "block";
+    });
+  };
+  document.body.appendChild(s);
+</script>
+</body>
+</html>

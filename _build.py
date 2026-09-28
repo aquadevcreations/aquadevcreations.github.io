@@ -269,6 +269,7 @@ APPS = [
   slug="pixel-fishing", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
   shots=["pixelfishing-1.jpg", "pixelfishing-2.jpg"], status="test",
   package="com.aquascape.pixelfishing",
+  demo="pixelfishing",
   play="https://play.google.com/store/apps/details?id=com.aquascape.pixelfishing",
   group=dict(email="pixelfishing@googlegroups.com", url="https://groups.google.com/g/pixelfishing"),
   tagline=("Pesca in pixel art retrò, per staccare ovunque tu sia.", "Retro pixel-art fishing, to unwind wherever you are."),
@@ -546,7 +547,7 @@ def demo_block(app):
         return ""
     return (f'<section class="demo-wrap">'
             f'<h2>{bi("Provala qui", "Try it here")}</h2>'
-            + bi("Una demo fedele della schermata principale dell'app, direttamente nel browser.", "A faithful demo of the app's main screen, right in your browser.", "p").replace('<p class="it">','<p class="it muted">').replace('<p class="en">','<p class="en muted">')
+            + (bi("Il gioco vero, direttamente nel browser: niente da installare.", "The real game, right in your browser: nothing to install.", "p") if d == "pixelfishing" else bi("Una demo fedele della schermata principale dell'app, direttamente nel browser.", "A faithful demo of the app's main screen, right in your browser.", "p")).replace('<p class="it">','<p class="it muted">').replace('<p class="en">','<p class="en muted">')
             + f'<div class="demo-stage"><div id="demo-{d}"></div></div>'
             f'<script src="demo-{d}.js" defer></script></section>')
 
