@@ -116,3 +116,47 @@ code{background:#eef3f2;padding:1px 6px;border-radius:5px;font-size:.9em}
 .app-card .cover-icon img{width:120px;height:120px;border-radius:28px;box-shadow:0 10px 30px rgba(0,0,0,.15)}
 .apps{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
 @media(max-width:900px){.apps{grid-template-columns:1fr}}
+
+/* ---------- Demo box ---------- */
+.demo-wrap{margin:8px 0 36px}
+.demo-wrap h2{font-size:1.3rem;margin-bottom:4px}
+.demo-wrap .muted{margin-bottom:14px;font-size:.95rem}
+.demo-stage{display:flex;flex-direction:column;align-items:center;gap:8px;max-width:360px}
+
+/* ---------- Irreversible demo (misure in dp dall'app) ---------- */
+#demo-irreversible{width:100%;display:flex;flex-direction:column;align-items:center}
+.irr-scaler{position:relative;overflow:hidden;border-radius:28px;box-shadow:0 14px 40px rgba(0,0,0,.25)}
+.irr-phone{position:absolute;top:0;left:0;width:360px;height:800px;transform-origin:top left;background:#000;font-family:Roboto,"Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;user-select:none;-webkit-tap-highlight-color:transparent}
+.irr-screen{position:absolute;inset:0;opacity:0;transition:opacity .8s}
+.irr-screen.on{opacity:1}
+.irr-main{background:#000;display:flex}
+.irr-col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 24px}
+.irr-title{color:#F4F4F5;font-size:18px;letter-spacing:5px;line-height:32px;font-weight:400;text-align:center}
+.irr-sub{margin-top:10px;color:#71717A;font-size:11px;letter-spacing:4px;line-height:16px;text-align:center}
+.irr-btnbox{position:relative;width:268px;height:268px;margin-top:44px;flex-shrink:0}
+.irr-btnbox canvas{position:absolute;inset:0}
+.irr-hit{position:absolute;left:34px;top:34px;width:200px;height:200px;border-radius:50%;border:0;background:transparent;cursor:pointer;padding:0;display:grid;place-items:center;outline:none}
+.irr-in{display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none}
+.irr-rl{color:#71717A;font-size:10px;letter-spacing:3px}
+.irr-cd{color:#52525B;font-size:10px;letter-spacing:1.5px}
+.irr-spin{width:32px;height:32px;border:2px solid rgba(244,244,245,.25);border-top-color:#F4F4F5;border-radius:50%;animation:irrspin 1s linear infinite;box-sizing:border-box}
+@keyframes irrspin{to{transform:rotate(360deg)}}
+.irr-days{margin-top:48px;color:#71717A;font-size:13px;letter-spacing:3px;line-height:22px;text-align:center}
+.irr-links{margin-top:24px;display:flex;flex-direction:column;align-items:center;gap:12px}
+.irr-links2{margin-top:36px}
+.irr-links span{color:#52525B;font-size:13px;letter-spacing:4px;font-weight:300;line-height:16px;padding:8px 20px;border-radius:4px;cursor:pointer}
+.irr-notice{margin-top:24px;background:#0D0D0D;border:1px solid #222;border-radius:6px;padding:12px 18px;color:#71717A;font-size:12px;letter-spacing:1.8px;line-height:22px;text-align:center;max-width:300px;opacity:0;transition:opacity .4s;cursor:pointer}
+.irr-notice.on{opacity:1}
+.irr-reveal{background:#000}
+.irr-bg{position:absolute;inset:0;background-size:cover;background-position:center;filter:brightness(1.4)}
+.irr-rv{position:absolute;inset:0;padding:16px 28px;display:flex;flex-direction:column;justify-content:space-between;align-items:center;opacity:0;transition:opacity 1.4s}
+.irr-rv.on{opacity:1}
+.irr-back{align-self:flex-start;width:48px;height:48px;margin-top:4px;border:0;background:transparent;display:grid;place-items:center;cursor:pointer;border-radius:50%}
+.irr-mid{width:100%;display:flex;flex-direction:column;align-items:center;padding:24px 0}
+.irr-hair{width:24px;height:1px;background:#222}
+.irr-event{margin:32px 0;color:#F4F4F5;font-size:20px;line-height:32px;letter-spacing:2.5px;font-weight:300;text-align:center}
+.irr-bottom{width:100%;display:flex;flex-direction:column;align-items:center;padding-bottom:24px}
+.irr-rec{color:#71717A;font-size:12px;letter-spacing:2px;line-height:22px;text-align:center}
+.irr-demo-note{margin-top:10px;color:#52525B;font-size:10px;letter-spacing:1px;text-align:center;font-style:italic}
+.irr-return{margin-top:28px;background:transparent;border:0;color:#52525B;font-family:inherit;font-size:11px;letter-spacing:4px;font-weight:600;padding:12px 24px;border-radius:4px;cursor:pointer}
+.irr-reset{margin-top:6px;background:none;border:0;color:var(--muted);font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer}

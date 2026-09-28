@@ -10,7 +10,7 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 EMAIL = "aquadev.creations@gmail.com"
 DEV = "aquadev"
 TELEGRAM = "https://t.me/donttouchthebutton"
-FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">'
+FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Roboto:wght@300;400;600&display=swap" rel="stylesheet">'
 
 
 def bi(it, en, tag="span"):
@@ -43,7 +43,7 @@ def mailto(subject, body=""):
 APPS = [
  dict(
   slug="wobblebrain", name="Wobblebrain", icon="wobblebrain-icon.jpg",
-  shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="live",
+  shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="test",
   package="com.aquascape.wobblebrain.puzzle",
   play="https://play.google.com/store/apps/details?id=com.aquascape.wobblebrain.puzzle",
   tagline=("Il puzzle della bilancia cervellotica.", "The brain-teasing balance puzzle."),
@@ -153,7 +153,8 @@ APPS = [
 
  dict(
   slug="irreversible", name="Irreversible", icon="irreversible-icon.jpg",
-  shots=["irreversible-1.jpg", "irreversible-2.jpg"], status="live",
+  shots=["irreversible-1.jpg", "irreversible-2.jpg"], status="test",
+  group=dict(email="irreversible-app@googlegroups.com", url="https://groups.google.com/g/irreversible-app"),
   package="com.aistudio.donttouchthebutton.kxmpzq",
   play="https://play.google.com/store/apps/details?id=com.aistudio.donttouchthebutton.kxmpzq",
   tagline=("Un bottone. Una pressione ogni 24 ore. Nessun ritorno.", "One button. One press every 24 hours. No way back."),
@@ -171,6 +172,7 @@ APPS = [
     "Minimal design, no distractions",
   ]),
   extra_btns=[(TELEGRAM, "Telegram", "Telegram")],
+  demo="irreversible",
   updated=("28 settembre 2026", "September 28, 2026"),
   privacy_it=f"""
 <p>Irreversible ("l'app") è sviluppata e gestita da uno sviluppatore indipendente, {DEV}. Questa informativa spiega quali dati raccoglie l'app, perché e come vengono usati.</p>
@@ -535,13 +537,24 @@ def page(app, active, title, desc, main_html):
             + f'\n<main class="main"><div class="inner">\n{main_html}\n</div></main>\n</div>\n' + foot_script(""))
 
 
+def demo_block(app):
+    d = app.get("demo")
+    if not d:
+        return ""
+    return (f'<section class="demo-wrap">'
+            f'<h2>{bi("Provala qui", "Try it here")}</h2>'
+            + bi("Una demo fedele della schermata principale dell'app, direttamente nel browser.", "A faithful demo of the app's main screen, right in your browser.", "p").replace('<p class="it">','<p class="it muted">').replace('<p class="en">','<p class="en muted">')
+            + f'<div class="demo-stage"><div id="demo-{d}"></div></div>'
+            f'<script src="demo-{d}.js" defer></script></section>')
+
+
 def overview(app):
     feats_it = "".join(f"<li>{f}</li>" for f in app["features"][0])
     feats_en = "".join(f"<li>{f}</li>" for f in app["features"][1])
     btns = ""
     if app.get("group"):
         pass  # i pulsanti sono nei passaggi per i tester, sotto
-    elif app["play"]:
+    elif app["play"] and app["status"] == "live":
         btns += f'<a class="btn primary" href="{app["play"]}" target="_blank" rel="noopener">▶ {bi("Scarica da Google Play", "Get it on Google Play")}</a>'
     else:
         btns += f'<a class="btn primary" href="{mailto("Voglio provare " + app["name"] + " / I want to test " + app["name"])}">{bi("Diventa tester", "Become a tester")}</a>'
@@ -570,6 +583,7 @@ def overview(app):
 <ul class="feat it">{feats_it}</ul><ul class="feat en">{feats_en}</ul>
 {test_note}
 <div class="btns">{btns}</div>
+{demo_block(app)}
 <div class="shots">{shots}</div>
 """
 
