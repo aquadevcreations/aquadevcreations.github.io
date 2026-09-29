@@ -535,3 +535,5 @@ code{background:#eef3f2;padding:1px 6px;border-radius:5px;font-size:.9em}
 .vbody ul{margin:12px 0 0;padding-left:20px}
 .vbody li{margin:6px 0;line-height:1.5}
 .vtitle{margin:12px 0 0;font-weight:700}
+.vbody .vsec{margin:14px 0 0;font-size:.8rem;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--muted)}
+.vbody p{margin:12px 0 0;line-height:1.55}
