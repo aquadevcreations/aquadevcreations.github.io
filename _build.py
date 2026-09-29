@@ -3,7 +3,7 @@
 Uso:  python3 _build.py   (dalla cartella del sito). Tutti i file stanno nella stessa cartella, senza sottocartelle.
 Per aggiungere un'app: aggiungi una voce in APPS con i suoi testi e rilancia lo script.
 """
-import os, html, hashlib
+import os, html, hashlib, json, datetime
 from urllib.parse import quote
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -42,7 +42,7 @@ def mailto(subject, body=""):
 # ------------------------------------------------------------------ APPS
 APPS = [
  dict(
-  slug="wobblebrain", name="Wobblebrain", icon="wobblebrain-icon.jpg",
+  slug="wobblebrain", seo_title="Wobblebrain – Balance Puzzle Game for Android", seo_desc="Wobblebrain is a cartoon balance-scale puzzle game for Android: place numbered blocks on the trays and balance every scale. Play the first chapter free in your browser.", app_cat="GameApplication", genre="Puzzle", name="Wobblebrain", icon="wobblebrain-icon.jpg",
   shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="test", demo="wobblebrain",
   group=dict(email="wobblebrain_closedtest@googlegroups.com", url="https://groups.google.com/g/wobblebrain_closedtest"),
   package="com.aquascape.wobblebrain.puzzle",
@@ -153,7 +153,7 @@ APPS = [
  ),
 
  dict(
-  slug="irreversible", name="Irreversible", icon="irreversible-icon.jpg",
+  slug="irreversible", seo_title="Irreversible – The One-Button Game for Android", seo_desc="Irreversible is a minimalist one-button game for Android: one press every 24 hours, recorded forever on the Solana blockchain. Try the button in your browser.", app_cat="GameApplication", genre="Casual", name="Irreversible", icon="irreversible-icon.jpg",
   shots=["irreversible-1.jpg", "irreversible-2.jpg"], status="test",
   group=dict(email="irreversible-app@googlegroups.com", url="https://groups.google.com/g/irreversible-app"),
   package="com.aistudio.donttouchthebutton.kxmpzq",
@@ -266,7 +266,7 @@ APPS = [
  ),
 
  dict(
-  slug="pixel-fishing", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
+  slug="pixel-fishing", seo_title="Pixel Fishing – Retro Pixel-Art Fishing Game for Android", seo_desc="Pixel Fishing is a relaxing retro pixel-art arcade fishing game for Android: catch unique fish, upgrade your gear and explore new lakes. Play a free demo in your browser.", app_cat="GameApplication", genre="Simulation", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
   shots=["pixelfishing-cover.jpg", "pixelfishing-2.jpg"], status="test",
   package="com.aquascape.pixelfishing",
   demo="pixelfishing",
@@ -358,7 +358,7 @@ APPS = [
  ),
 
  dict(
-  slug="nudge", name="Nudge", icon="nudge-icon.png", hidden=True,  # nascosta: pagine attive ma non linkate
+  slug="nudge", seo_title="Nudge – Long-Distance Touch App for Couples", seo_desc="Nudge is a private Android app for couples: send haptic touches, a buzzing fly, paint splashes and neon drawings to your partner in real time.", app_cat="LifestyleApplication", genre="Lifestyle", name="Nudge", icon="nudge-icon.png", hidden=True,  # nascosta: pagine attive ma non linkate
   shots=["nudge-1.jpg", "nudge-2.jpg", "nudge-3.jpg"], status="test",
   package="com.aquascape.nudge",
   demo="nudge",
@@ -479,7 +479,12 @@ APPS = [
 
 
 # ------------------------------------------------------------------ TEMPLATES
-def head(title, desc, prefix):
+SITE = "https://aquadevcreations.github.io/"
+
+
+def head(title, desc, prefix, path="", image="logo.png", noindex=False, jsonld=None):
+    url = SITE + ("" if path in ("", "index.html") else path)
+    ld = "".join(f'<script type="application/ld+json">{json.dumps(j, ensure_ascii=False)}</script>\n' for j in (jsonld or []))
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -487,10 +492,19 @@ def head(title, desc, prefix):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
+{'<meta name="robots" content="noindex, follow">' if noindex else ''}
+<link rel="canonical" href="{url}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="aquadev creations">
+<meta property="og:title" content="{html.escape(title)}">
+<meta property="og:description" content="{html.escape(desc)}">
+<meta property="og:url" content="{url}">
+<meta property="og:image" content="{SITE}{image}">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.png">
 {FONTS}
 <link rel="stylesheet" href="{V("style.css")}">
-</head>
+{ld}</head>
 <body data-lang="en">
 """
 
@@ -547,8 +561,9 @@ def sidebar(app, active):
 </aside>"""
 
 
-def page(app, active, title, desc, main_html):
-    return (head(title, desc, "") + '<div class="layout">\n' + sidebar(app, active)
+def page(app, active, title, desc, main_html, path="", jsonld=None):
+    img = (app.get("shots") or [app["icon"]])[0]
+    return (head(title, desc, "", path, img, noindex=bool(app.get("hidden")), jsonld=jsonld) + '<div class="layout">\n' + sidebar(app, active)
             + f'\n<main class="main"><div class="inner">\n{main_html}\n</div></main>\n</div>\n' + foot_script(""))
 
 
@@ -634,7 +649,7 @@ def privacy(app):
 <div class="it"><h1>Privacy Policy — {app['name']}</h1><p class="updated">Ultimo aggiornamento: {app['updated'][0]}</p>{meta_box(app,'it')}{app['privacy_it']}{common_it}</div>
 <div class="en"><h1>Privacy Policy — {app['name']}</h1><p class="updated">Last updated: {app['updated'][1]}</p>{meta_box(app,'en')}{app['privacy_en']}{common_en}</div>
 </article>"""
-    return page(app, "privacy", f"Privacy Policy — {app['name']}", f"Privacy policy of {app['name']} by {DEV}.", body)
+    return page(app, "privacy", f"Privacy Policy — {app['name']}", f"Privacy policy of {app['name']} by {DEV}.", body, app['slug'] + "-privacy.html")
 
 
 def delete(app):
@@ -652,7 +667,7 @@ def delete(app):
 <div class="it"><h1>Cancellazione dei dati — {app['name']}</h1><p class="updated">App <strong>{app['name']}</strong> dello sviluppatore <strong>{DEV}</strong> su Google Play</p>{app['delete_it']}{req_it}</div>
 <div class="en"><h1>Data deletion — {app['name']}</h1><p class="updated">App <strong>{app['name']}</strong> by developer <strong>{DEV}</strong> on Google Play</p>{app['delete_en']}{req_en}</div>
 </article>"""
-    return page(app, "delete", f"Data deletion — {app['name']}", f"How to delete your data for {app['name']} by {DEV}.", body)
+    return page(app, "delete", f"Data deletion — {app['name']}", f"How to delete your data for {app['name']} by {DEV}.", body, app['slug'] + "-delete-data.html")
 
 
 def support(app):
@@ -675,7 +690,7 @@ def support(app):
 <ul class="it"><li>il modello del telefono e la versione di Android</li><li>cosa stavi facendo quando è successo il problema</li><li>se puoi, uno screenshot</li></ul>
 <ul class="en"><li>your phone model and Android version</li><li>what you were doing when the problem happened</li><li>a screenshot, if you can</li></ul>
 </article>"""
-    return page(app, "support", f"Support — {app['name']}", f"Support for {app['name']} by {DEV}.", body)
+    return page(app, "support", f"Support — {app['name']}", f"Support for {app['name']} by {DEV}.", body, app['slug'] + "-support.html")
 
 
 # ---- Changelog per app (più recente in cima). Ogni voce: (versione, [(it, en), ...], titolo it/en opzionale) ----
@@ -738,7 +753,35 @@ def versions(app):
 {bi("Le novità di ogni aggiornamento. Tocca una versione per vedere cosa è cambiato.", "What's new in every update. Tap a version to see what changed.", "p").replace('<p class="it">','<p class="updated it">').replace('<p class="en">','<p class="updated en">')}
 {inner}
 </article>"""
-    return page(app, "versions", f"Versions — {app['name']}", f"Changelog and version history of {app['name']} by {DEV}.", body)
+    return page(app, "versions", f"Versions — {app['name']}", f"Changelog and version history of {app['name']} by {DEV}.", body, app['slug'] + "-versions.html")
+
+
+ORG = {"@type": "Organization", "name": "aquadev creations", "url": SITE, "logo": SITE + "logo.png", "email": EMAIL}
+
+
+def app_ld(a):
+    ld = {"@context": "https://schema.org", "@type": "MobileApplication", "name": a["name"],
+          "description": a.get("seo_desc", a["tagline"][1]), "url": SITE + a["slug"] + ".html",
+          "image": SITE + (a.get("shots") or [a["icon"]])[0], "operatingSystem": "Android",
+          "applicationCategory": a.get("app_cat", "GameApplication"), "genre": a.get("genre", ""),
+          "inLanguage": ["en", "it"], "author": ORG, "publisher": ORG,
+          "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}}
+    if a.get("status") == "live" and a.get("play"):
+        ld["downloadUrl"] = a["play"]; ld["installUrl"] = a["play"]
+    return ld
+
+
+def sitemap():
+    today = datetime.date.today().isoformat()
+    urls = [(SITE, "1.0")]
+    for a in APPS:
+        if a.get("hidden"):
+            continue
+        urls.append((SITE + a["slug"] + ".html", "0.9"))
+        for suf, pr in (("-versions.html", "0.6"), ("-support.html", "0.5"), ("-privacy.html", "0.3"), ("-delete-data.html", "0.3")):
+            urls.append((SITE + a["slug"] + suf, pr))
+    body = "".join(f"  <url><loc>{u}</loc><lastmod>{today}</lastmod><priority>{p}</priority></url>\n" for u, p in urls)
+    return '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + body + "</urlset>\n"
 
 
 def home():
@@ -753,7 +796,11 @@ def home():
   </div>
 </a>"""
     links = " · ".join(f'<a href="{a["slug"]}-privacy.html">{a["name"]}</a>' for a in APPS if not a.get("hidden"))
-    return (head("aquadev creations", "aquadev creations — Android games and apps: Wobblebrain, Irreversible, Pixel Fishing.", "")
+    vis = [a for a in APPS if not a.get("hidden")]
+    names = ", ".join(a["name"] for a in vis)
+    home_ld = [dict({"@context": "https://schema.org"}, **ORG),
+               {"@context": "https://schema.org", "@type": "WebSite", "name": "aquadev creations", "url": SITE}]
+    return (head("aquadev creations – Android Games & Apps", f"aquadev creations: indie Android games and apps — {names}. Play free demos right in your browser.", "", "index.html", "logo.png", jsonld=home_ld)
             + f"""<div class="topbar"><button class="lang">EN</button></div>
 <section class="hero">
   <div class="hero-video"><video src="aquadev-intro.mp4" autoplay muted playsinline preload="auto" onerror="this.parentNode.classList.add('fallback');this.outerHTML='&lt;img src=&quot;logo.png&quot; alt=&quot;aquadev creations&quot;&gt;'"></video></div>
@@ -779,8 +826,10 @@ def write(path, content):
 
 if __name__ == "__main__":
     write("index.html", home())
+    write("sitemap.xml", sitemap())
+    write("robots.txt", "User-agent: *\nAllow: /\n\nSitemap: " + SITE + "sitemap.xml\n")
     for a in APPS:
-        write(f"{a['slug']}.html", page(a, "overview", f"{a['name']} — aquadev creations", f"{a['name']}: {a['tagline'][1]}", overview(a)))
+        write(f"{a['slug']}.html", page(a, "overview", a.get("seo_title", a["name"]), a.get("seo_desc", a["tagline"][1]), overview(a), f"{a['slug']}.html", [app_ld(a)]))
         write(f"{a['slug']}-privacy.html", privacy(a))
         write(f"{a['slug']}-delete-data.html", delete(a))
         write(f"{a['slug']}-versions.html", versions(a))
