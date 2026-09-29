@@ -696,6 +696,12 @@ def support(app):
 # ---- Changelog per app (più recente in cima). Ogni voce: (versione, [(it, en), ...], titolo it/en opzionale) ----
 CHANGELOGS = {
     "irreversible": [
+        ("1.6.2", None, [
+            ("Se il messaggio sul consenso non era comparso, ora compare quando provi a guardare un video, senza dover reinstallare l'app.", "If the consent message didn't appear, it now shows up when you try to watch a video — no need to reinstall."),
+            ("Se in passato avevi rifiutato, toccando \"watch instead\" si aprono le impostazioni privacy per cambiare idea.", "If you declined before, tapping \"watch instead\" opens ad privacy settings so you can change your mind."),
+            ("Dopo aver dato il consenso, il video parte subito.", "Once you allow ads, the video starts right away."),
+            ("Piccole rifiniture dietro le quinte.", "Small refinements under the hood."),
+        ]),
         ("1.6.1", None, [
             ("Consenso privacy: ora scegli tu come vengono usati i tuoi dati per gli annunci, come richiesto in UE, Regno Unito e Svizzera.", "Privacy consent: you now choose how your data is used for ads, as required in the EU, UK and Switzerland."),
             ("Nuova voce \"ad privacy settings\" in \"what is this\" per cambiare la scelta in qualsiasi momento.", "New \"ad privacy settings\" option in \"what is this\" to change your choice at any time."),
