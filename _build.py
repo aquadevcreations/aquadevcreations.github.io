@@ -490,6 +490,7 @@ def head(title, desc, prefix, path="", image="logo.png", noindex=False, jsonld=N
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google-site-verification" content="GXEF7eYae7zDzzclbk-e1O8KHhjFupJQ23dYMC-2I18">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 {'<meta name="robots" content="noindex, follow">' if noindex else ''}
