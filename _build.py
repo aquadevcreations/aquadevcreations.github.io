@@ -768,7 +768,6 @@ CHANGELOGS = {
             ("Corretto il pulsante \"watch instead\" che a volte restava bloccato dopo la fine dell'attesa: ora si aggiorna da solo.", "Fixed the \"watch instead\" button sometimes staying stuck after the cooldown ended — it now updates automatically."),
             ("Corretti i video a premio che riprovavano a caricarsi troppo spesso quando non ce n'erano.", "Fixed rewarded ads retrying too aggressively when none were available."),
             ("Aggiunto un conto alla rovescia chiaro quando provi a guardarne un altro troppo presto.", "Added a clear countdown when trying to watch again too soon."),
-            ("Aggiunto un modo rapido per copiare l'importo esatto del pagamento in SOL.", "Added a quick way to copy the exact SOL payment amount."),
         ]),
     ],
     "pixel-fishing": [
