@@ -154,8 +154,7 @@ APPS = [
 
  dict(
   slug="irreversible", seo_title="Irreversible – The One-Button Game for Android", seo_desc="Irreversible is a minimalist one-button game for Android: one press every 24 hours, recorded forever on the Solana blockchain. Try the button in your browser.", app_cat="GameApplication", genre="Casual", name="Irreversible", icon="irreversible-icon.jpg",
-  shots=["irreversible-1.jpg", "irreversible-2.jpg"], status="test",
-  group=dict(email="irreversible-app@googlegroups.com", url="https://groups.google.com/g/irreversible-app"),
+  shots=["irreversible-1.jpg", "irreversible-2.jpg"], status="live",
   package="com.aistudio.donttouchthebutton.kxmpzq",
   play="https://play.google.com/store/apps/details?id=com.aistudio.donttouchthebutton.kxmpzq",
   tagline=("Un bottone. Una pressione ogni 24 ore. Nessun ritorno.", "One button. One press every 24 hours. No way back."),
