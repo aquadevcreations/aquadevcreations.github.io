@@ -777,6 +777,13 @@ CHANGELOGS = {
         ]),
     ],
     "pixel-fishing": [
+        ("2.0", None, [
+            ("<strong>Acquario in pixel interattivo:</strong> nuova modalità acquario con cornice di lusso in mogano e ottone, habitat separati (Acqua dolce e Barriera corallina) e pesci da nutrire.", "<strong>Interactive Pixel Aquarium:</strong> new aquarium mode featuring luxury mahogany &amp; brass framing, separate habitats (Freshwater &amp; Coral Reef), and fish feeding."),
+            ("<strong>Nuoto e comportamento dei pesci:</strong> nuoto orizzontale realistico con una leggera respirazione da fermi, inclinazione dinamica e movimenti sfalsati dopo aver mangiato.", "<strong>Fish Swimming &amp; Behavior:</strong> realistic horizontal swimming with subtle idle breathing, dynamic pitch angling, and desynchronized roaming after eating."),
+            ("<strong>Habitat separati:</strong> specie d'acqua salata e d'acqua dolce rigorosamente divise per vasca.", "<strong>Habitat Segregation:</strong> strict separation between saltwater and freshwater species per tank."),
+            ("<strong>Nuovo punto sulla scogliera:</strong> il pontile è sostituito da rocce naturali a strapiombo, con il pescatore riposizionato.", "<strong>Rocky Cliffside Spot:</strong> dock replaced with natural cliffside rocks and adjusted fisherman placement."),
+            ("<strong>Rifiniture generali:</strong> migliorie grafiche, correzioni all'interfaccia e ottimizzazione delle prestazioni.", "<strong>General Polish:</strong> visual refinements, UI fixes, and overall performance optimizations."),
+        ]),
         ("1.2.1", None, [
             ("Nuova schermata iniziale arcade con pulsanti Start e Impostazioni e scritta retrò lampeggiante", "Brand new arcade title screen with Start, Settings buttons and retro blinking prompt"),
             ("Fisica dinamica del salto del pesce: il galleggiante esce dall'acqua insieme al pesce e la lenza disegna un arco realistico a mezz'aria", "Dynamic fish jump physics: the bobber now lifts out of the water with the fish and the line arcs realistically in mid-air"),
