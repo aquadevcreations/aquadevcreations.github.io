@@ -12,7 +12,7 @@
 
   var PW = 425, PH = 880, DENS = 2.75;
   var OUT = "#1E100B";
-  var GROUP = "https://groups.google.com/g/wobblebrain_closedtest";
+  var PLAY = "https://play.google.com/store/apps/details?id=com.aquascape.wobblebrain.puzzle";
 
   // ---- Colori (ui/theme/Color.kt, WeightBlockView.getBlockColorSpec "classic") ----
   var BLOCK = {
@@ -927,9 +927,9 @@
     var total = 0; LEVELS.forEach(function (l) { total += bestStars[l.id] || 0; });
     endEl.innerHTML = '<div class="wb-endc"><div class="wb-dpill">' + t("CAPITOLO 1 COMPLETATO!", "CHAPTER 1 COMPLETE!") + '</div>' +
       '<div class="wb-endst">' + svg("star", 22, "#FF8800") + '<b>' + total + ' / 15</b></div>' +
-      '<p>' + t("Hai bilanciato la Foresta dell'Equilibrio. Nel gioco completo ti aspettano tanti altri capitoli, nuove operazioni e la sfida giornaliera.",
-               "You balanced The Forest of Balance. The full game has many more chapters, new operations and a daily challenge.") + '</p>' +
-      '<a class="wb-next" href="' + GROUP + '" target="_blank" rel="noopener"><span>' + t("Diventa tester", "Become a tester") + '</span>' + svg("play", 18, OUT) + '</a>' +
+      '<p>' + t("Hai bilanciato la Foresta dell'Equilibrio. Nel gioco completo, gratis su Google Play, ti aspettano tanti altri capitoli, nuove operazioni e la sfida giornaliera.",
+               "You balanced The Forest of Balance. The full game, free on Google Play, has many more chapters, new operations and a daily challenge.") + '</p>' +
+      '<a class="wb-next" href="' + PLAY + '" target="_blank" rel="noopener"><span>' + t("Scarica da Google Play", "Get it on Google Play") + '</span>' + svg("play", 18, OUT) + '</a>' +
       '<button class="wb-replay" data-a="restart">' + svg("refresh", 18, OUT) + '<span>' + t("Ricomincia dal livello 1", "Start again from level 1") + '</span></button></div>';
     endEl.hidden = false;
     play("fanfare"); confetti();

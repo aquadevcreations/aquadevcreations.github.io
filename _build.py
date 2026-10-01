@@ -43,8 +43,7 @@ def mailto(subject, body=""):
 APPS = [
  dict(
   slug="wobblebrain", seo_title="Wobblebrain – Balance Puzzle Game for Android", seo_desc="Wobblebrain is a cartoon balance-scale puzzle game for Android: place numbered blocks on the trays and balance every scale. Play the first chapter free in your browser.", app_cat="GameApplication", genre="Puzzle", name="Wobblebrain", icon="wobblebrain-icon.jpg",
-  shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="test", demo="wobblebrain",
-  group=dict(email="wobblebrain_closedtest@googlegroups.com", url="https://groups.google.com/g/wobblebrain_closedtest"),
+  shots=["wobblebrain-1.jpg", "wobblebrain-2.jpg"], status="live", demo="wobblebrain",
   package="com.aquascape.wobblebrain.puzzle",
   play="https://play.google.com/store/apps/details?id=com.aquascape.wobblebrain.puzzle",
   tagline=("Il puzzle della bilancia cervellotica.", "The brain-teasing balance puzzle."),
