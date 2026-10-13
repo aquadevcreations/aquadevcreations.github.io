@@ -265,11 +265,10 @@ APPS = [
 
  dict(
   slug="pixel-fishing", seo_title="Pixel Fishing – Retro Pixel-Art Fishing Game for Android", seo_desc="Pixel Fishing is a relaxing retro pixel-art arcade fishing game for Android: catch unique fish, upgrade your gear and explore new lakes. Play a free demo in your browser.", app_cat="GameApplication", genre="Simulation", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
-  shots=["pixelfishing-cover.jpg", "pixelfishing-2.jpg"], status="test",
+  shots=["pixelfishing-cover.jpg", "pixelfishing-2.jpg"], status="live",
   package="com.aquascape.pixelfishing",
   demo="pixelfishing",
   play="https://play.google.com/store/apps/details?id=com.aquascape.pixelfishing",
-  group=dict(email="pixelfishing@googlegroups.com", url="https://groups.google.com/g/pixelfishing"),
   tagline=("Pesca in pixel art retrò, per staccare ovunque tu sia.", "Retro pixel-art fishing, to unwind wherever you are."),
   intro=("Prepara la canna, esplora gli specchi d'acqua e metti alla prova i riflessi per catturare pesci unici, guadagnare monete e completare la collezione.",
          "Grab your rod, explore the waters and test your reflexes to catch unique fish, earn coins and complete your collection."),
