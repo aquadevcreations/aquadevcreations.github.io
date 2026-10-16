@@ -265,7 +265,7 @@ APPS = [
 
  dict(
   slug="pixel-fishing", seo_title="Pixel Fishing – Retro Pixel-Art Fishing Game for Android", seo_desc="Pixel Fishing is a relaxing retro pixel-art arcade fishing game for Android: catch unique fish, upgrade your gear and explore new lakes. Play a free demo in your browser.", app_cat="GameApplication", genre="Simulation", name="Pixel Fishing", icon="pixelfishing-icon.jpg",
-  shots=["pixelfishing-cover.jpg", "pixelfishing-2.jpg"], status="live",
+  shots=["pixelfishing-cover.jpg", "pixelfishing-shot-2.jpg", "pixelfishing-shot-3.jpg", "pixelfishing-shot-4.jpg", "pixelfishing-shot-5.jpg", "pixelfishing-shot-6.jpg", "pixelfishing-shot-7.jpg"], status="live",
   package="com.aquascape.pixelfishing",
   demo="pixelfishing",
   play="https://play.google.com/store/apps/details?id=com.aquascape.pixelfishing",
@@ -287,7 +287,7 @@ APPS = [
     "<strong>100% offline</strong>, no internet required",
     "<strong>No intrusive ads</strong>",
   ]),
-  updated=("26 settembre 2026", "September 26, 2026"),
+  updated=("16 ottobre 2026", "October 16, 2026"),
   privacy_it=f"""
 <p>Questa informativa riguarda l'uso del gioco <strong>Pixel Fishing</strong>, sviluppato e pubblicato da <strong>{DEV}</strong> ("noi"). Vogliamo offrirti un'esperienza trasparente, sicura e rispettosa della privacy.</p>
 <h2>1. Raccolta e conservazione dei dati</h2>
@@ -775,6 +775,26 @@ CHANGELOGS = {
         ]),
     ],
     "pixel-fishing": [
+        ("2.1.5", ("Evento Frenesia d'Oro & Ottimizzazioni", "Golden Frenzy Event & Polish"), [
+            ("<strong>Evento limitato Frenesia d'Oro:</strong> preparati a pescare pesci radiosi dorati e leggendari con tassi di abboccata aumentati e ricompense esclusive.", "<strong>Golden Frenzy Limited Event:</strong> get ready to catch radiant golden and legendary fish with boosted bite rates and exclusive rewards."),
+            ("<strong>Pastura d'Oro (Golden Chum):</strong> nuova esca speciale disponibile nel negozio dell'attrezzatura per attirare le prede più rare dello specchio d'acqua.", "<strong>Golden Chum Bait:</strong> brand new special bait in the gear shop to attract rare and golden fish to your line."),
+            ("<strong>Intro AquaDev a tutto schermo:</strong> video introduttivo rimasterizzato per coprire l'intero schermo senza tagli né bande nere, con riproduzione completa e transizione fluida al titolo.", "<strong>Fullscreen AquaDev Splash:</strong> remastered intro video playing seamlessly edge-to-edge without letterboxing or cropping, smoothly transitioning to title."),
+            ("<strong>Correzione video a premio & riscatto:</strong> migliorato il ciclo di precaricamento degli annunci rewarded e risolto il riscatto dei premi gratuiti.", "<strong>Rewarded Ads & Claim Fixes:</strong> improved rewarded ad preloading and fixed reward claim timers."),
+            ("<strong>Audio e sincronizzazione salvataggi:</strong> bilanciamento degli effetti sonori e persistenza locale immediata.", "<strong>Audio & Save Persistence:</strong> balanced sound effects and robust local save state handling."),
+        ]),
+        ("2.1.4", None, [
+            ("Video di avvio AquaDev a schermo intero con audio dedicato", "Fullscreen AquaDev intro video with dedicated audio"),
+            ("Precaricamento anticipato delle pubblicità a premio all'avvio", "Early background preloading of rewarded video ads at launch"),
+            ("Miglioramenti alla stabilità di riproduzione dei filmati", "Video playback stability improvements"),
+        ]),
+        ("2.1.3", None, [
+            ("Supporto per le API Android più recenti e template Gradle ottimizzati", "Updated Android target APIs and optimized Gradle build templates"),
+            ("Correzioni minori all'interfaccia utente", "Minor user interface polish and fixes"),
+        ]),
+        ("2.1.2", None, [
+            ("Ottimizzazione dell'audio e degli effetti sonori durante il lancio e il recupero", "Optimized audio and sound effects during casting and reeling"),
+            ("Miglioramenti alla localizzazione italiano e inglese", "Italian and English localization polish"),
+        ]),
         ("2.0", None, [
             ("<strong>Acquario in pixel interattivo:</strong> nuova modalità acquario con cornice di lusso in mogano e ottone, habitat separati (Acqua dolce e Barriera corallina) e pesci da nutrire.", "<strong>Interactive Pixel Aquarium:</strong> new aquarium mode featuring luxury mahogany &amp; brass framing, separate habitats (Freshwater &amp; Coral Reef), and fish feeding."),
             ("<strong>Nuoto e comportamento dei pesci:</strong> nuoto orizzontale realistico con una leggera respirazione da fermi, inclinazione dinamica e movimenti sfalsati dopo aver mangiato.", "<strong>Fish Swimming &amp; Behavior:</strong> realistic horizontal swimming with subtle idle breathing, dynamic pitch angling, and desynchronized roaming after eating."),
