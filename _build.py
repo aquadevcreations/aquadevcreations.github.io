@@ -287,7 +287,7 @@ APPS = [
     "<strong>100% offline</strong>, no internet required",
     "<strong>No intrusive ads</strong>",
   ]),
-  updated=("16 ottobre 2026", "October 16, 2026"),
+  updated=("22 ottobre 2026", "October 22, 2026"),
   privacy_it=f"""
 <p>Questa informativa riguarda l'uso del gioco <strong>Pixel Fishing</strong>, sviluppato e pubblicato da <strong>{DEV}</strong> ("noi"). Vogliamo offrirti un'esperienza trasparente, sicura e rispettosa della privacy.</p>
 <h2>1. Raccolta e conservazione dei dati</h2>
@@ -775,6 +775,13 @@ CHANGELOGS = {
         ]),
     ],
     "pixel-fishing": [
+        ("2.2.1", ("Console Retrò, Ecoscandaglio Sonar & Mini-Camera Subacquea 8-bit", "Retro Arcade Console, Sonar & 8-bit Underwater Fight Cam"), [
+            ("<strong>Console Arcade e Display LCD Game Boy:</strong> nuova interfaccia vintage con pulsanti concavi ad arco stile cabinato arcade giapponese e schermo LCD verde dot-matrix a pixel autentici.", "<strong>Retro Arcade Console & Game Boy LCD:</strong> all-new vintage console dashboard with concave Japanese arcade buttons and authentic green dot-matrix LCD screen."),
+            ("<strong>Ecoscandaglio Sonar & Telecamera Subacquea 8-bit:</strong> visualizzazione sonar con cono acustico durante il lancio e passaggio automatico alla telecamera subacquea 8-bit durante il recupero.", "<strong>Fishfinder Sonar & 8-bit Underwater Fight Cam:</strong> real acoustic sonar cone during casting that seamlessly transitions to an authentic 8-bit underwater camera during reeling."),
+            ("<strong>Lotta subacquea in tempo reale:</strong> tracciamento metrico della profondità, lenza tesa dinamica, silhouette animate del pesce all'amo e scia di bollicine.", "<strong>Live Underwater Combat:</strong> real-time depth meter, dynamic fishing line, animated hooked fish struggle, and bubble streams."),
+            ("<strong>Navigazione audio ottimizzata:</strong> eliminato il doppio clic al cambio scheda nel menu laterale.", "<strong>Optimized Audio Navigation:</strong> resolved double click audio artifacts when switching menu drawer tabs."),
+            ("<strong>Layout a schermo intero:</strong> copertura completa senza fasce scoperte e rimozione dei popup automatici all'avvio.", "<strong>Full-Screen Polish:</strong> seamless full-screen coverage with no empty margins and zero auto-popups on startup."),
+        ]),
         ("2.1.5", ("Evento Frenesia d'Oro & Ottimizzazioni", "Golden Frenzy Event & Polish"), [
             ("<strong>Evento limitato Frenesia d'Oro:</strong> preparati a pescare pesci radiosi dorati e leggendari con tassi di abboccata aumentati e ricompense esclusive.", "<strong>Golden Frenzy Limited Event:</strong> get ready to catch radiant golden and legendary fish with boosted bite rates and exclusive rewards."),
             ("<strong>Pastura d'Oro (Golden Chum):</strong> nuova esca speciale disponibile nel negozio dell'attrezzatura per attirare le prede più rare dello specchio d'acqua.", "<strong>Golden Chum Bait:</strong> brand new special bait in the gear shop to attract rare and golden fish to your line."),
